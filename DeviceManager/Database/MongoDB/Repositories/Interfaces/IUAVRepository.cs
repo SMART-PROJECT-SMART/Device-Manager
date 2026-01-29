@@ -11,5 +11,6 @@ namespace DeviceManager.Database.MongoDB.Repositories.Interfaces
         public Task<bool> UpdateUAVAsync(int tailId, UpdateUAVDto updateUAVDto,CancellationToken cancellationToken = default);
         public Task<bool> DeleteUAVAsync(int tailId,CancellationToken cancellationToken = default);
         public Task<IEnumerable<UAVRo>> GetAllUAVsAsync(CancellationToken cancellationToken = default);
+        public Task<bool> DoesUAVExists(int tailId);
     }
 }

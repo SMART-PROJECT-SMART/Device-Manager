@@ -31,6 +31,12 @@ namespace DeviceManager.Database.MongoDB.Repositories
             return result.DeletedCount > 0;
         }
 
+        public Task<bool> DoesUAVExists(int tailId)
+        {
+            FilterDefinition<UAV> filter = Builders<UAV>.Filter.Eq(u => u.TailId, tailId);
+            return _uavCollection.Find(filter).AnyAsync();
+        }
+
         public async Task<IEnumerable<UAVRo>> GetAllUAVsAsync(CancellationToken cancellationToken = default)
         {
             IEnumerable<UAV> uavs = await _uavCollection.Find(_ => true).ToListAsync();
