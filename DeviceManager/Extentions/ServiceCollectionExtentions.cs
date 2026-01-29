@@ -1,5 +1,7 @@
 ﻿using DeviceManager.Common.Constants;
 using DeviceManager.Config;
+using DeviceManager.Database.MongoDB.Repositories;
+using DeviceManager.Database.MongoDB.Repositories.Interfaces;
 using MongoDB.Driver;
 using System.Text.Json.Serialization;
 
@@ -23,6 +25,10 @@ namespace DeviceManager.Extentions
                 MongoDbConfiguration config = sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<MongoDbConfiguration>>().Value;
                 return new MongoClient(config.ConnectionString);
             });
+            return services;
+        }
+        public static IServiceCollection AddMongoDBServices(this IServiceCollection services) {
+            services.AddSingleton<IUAVRepository, UAVRepository>();
             return services;
         }
     }
