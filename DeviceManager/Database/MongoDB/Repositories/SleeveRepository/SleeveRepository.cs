@@ -1,0 +1,74 @@
+using DeviceManager.Common.Constants;
+using DeviceManager.Config;
+using DeviceManager.Database.MongoDB.Entities;
+using DeviceManager.Extentions;
+using DeviceManager.Models.Dto;
+using DeviceManager.Models.Ro;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
+
+namespace DeviceManager.Database.MongoDB.Repositories.SleeveRepository
+{
+    public class SleeveRepository : ISleeveRepository
+    {
+        private readonly IMongoCollection<Sleeve> _sleeveCollection;
+
+        public SleeveRepository(IMongoClient mongoClient, IOptions<MongoDbConfiguration> mongoDBConfig)
+        {
+            IMongoDatabase database = mongoClient.GetDatabase(mongoDBConfig.Value.DatabaseName);
+            _sleeveCollection = database.GetCollection<Sleeve>(DeviceManagerConstants.Collections.SLEEVE_COLLECTION);
+        }
+
+        public async Task<Sleeve> CreateSleeveAsync(CreateSleeveDTO createSleeveDTO, CancellationToken cancellationToken = default)
+        {
+            Sleeve sleeveEntity = createSleeveDTO.ToEntity();
+            await _sleeveCollection.InsertOneAsync(sleeveEntity, null, cancellationToken);
+            return sleeveEntity;
+        }
+
+        public async Task<bool> DeleteSleeveAsync(string name, CancellationToken cancellationToken = default)
+        {
+            FilterDefinition<Sleeve> filter = Builders<Sleeve>.Filter.Eq(s => s.Name, name);
+            DeleteResult result = await _sleeveCollection.DeleteOneAsync(filter, cancellationToken);
+            return result.DeletedCount > 0;
+        }
+
+        public Task<bool> DoesSleeveExistsAsync(string name)
+        {
+            FilterDefinition<Sleeve> filter = Builders<Sleeve>.Filter.Eq(s => s.Name, name);
+            return _sleeveCollection.Find(filter).AnyAsync();
+        }
+
+        public async Task<IEnumerable<SleeveRo>> GetAllSleevesAsync(CancellationToken cancellationToken = default)
+        {
+            IEnumerable<Sleeve> sleeves = await _sleeveCollection.Find(_ => true).ToListAsync(cancellationToken);
+            return sleeves.ToRo();
+        }
+
+        public Task<SleeveRo> GetSleeveByNameAsync(string name, CancellationToken cancellationToken = default)
+        {
+            FilterDefinition<Sleeve> filter = Builders<Sleeve>.Filter.Eq(s => s.Name, name);
+            return _sleeveCollection.Find(filter).FirstOrDefaultAsync(cancellationToken).ContinueWith(task => task.Result.ToRo(), cancellationToken);
+        }
+
+        public Task<bool> UpdateSleeveAsync(string name, UpdateSleeveDTO updateSleeveDTO, CancellationToken cancellationToken = default)
+        {
+            FilterDefinition<Sleeve> filter = Builders<Sleeve>.Filter.Eq(s => s.Name, name);
+            List<UpdateDefinition<Sleeve>> updates = new List<UpdateDefinition<Sleeve>>();
+
+            if (updateSleeveDTO.Name != null)
+                updates.Add(Builders<Sleeve>.Update.Set(s => s.Name, updateSleeveDTO.Name));
+
+            if (updateSleeveDTO.Location != null)
+                updates.Add(Builders<Sleeve>.Update.Set(s => s.Location, updateSleeveDTO.Location));
+
+            if (updateSleeveDTO.PortNumbers != null)
+                updates.Add(Builders<Sleeve>.Update.Set(s => s.PortNumbers, updateSleeveDTO.PortNumbers));
+
+            UpdateDefinition<Sleeve> combinedUpdate = Builders<Sleeve>.Update.Combine(updates);
+
+            return _sleeveCollection.UpdateOneAsync(filter, combinedUpdate, null, cancellationToken)
+                .ContinueWith(task => task.Result.ModifiedCount > 0, cancellationToken);
+        }
+    }
+}
