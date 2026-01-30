@@ -1,5 +1,5 @@
 ﻿using DeviceManager.Database.MongoDB.Entities;
-using DeviceManager.Database.MongoDB.Repositories.Interfaces;
+using DeviceManager.Database.MongoDB.Repositories.UAVRepository;
 using DeviceManager.Database.MongoDB.Services.UAVDBService.Interfaces;
 using DeviceManager.Models.Dto;
 using DeviceManager.Models.Ro;
