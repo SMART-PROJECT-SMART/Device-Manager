@@ -1,7 +1,10 @@
 ﻿using DeviceManager.Common.Constants;
 using DeviceManager.Config;
-using DeviceManager.Database.MongoDB.Repositories;
-using DeviceManager.Database.MongoDB.Repositories.Interfaces;
+using DeviceManager.Database.MongoDB.Repositories.UAVRepository;
+using DeviceManager.Database.MongoDB.Repositories.SleeveRepository;
+using DeviceManager.Database.MongoDB.Services.UAVDBService;
+using DeviceManager.Database.MongoDB.Services.UAVDBService.Interfaces;
+using DeviceManager.Database.MongoDB.Services.SleeveDBService;
 using MongoDB.Driver;
 using System.Text.Json.Serialization;
 
@@ -29,6 +32,9 @@ namespace DeviceManager.Extentions
         }
         public static IServiceCollection AddMongoDBServices(this IServiceCollection services) {
             services.AddSingleton<IUAVRepository, UAVRepository>();
+            services.AddSingleton<ISleeveRepository, SleeveRepository>();
+            services.AddSingleton<IUAVDBService, UAVDBService>();
+            services.AddSingleton<ISleeveDBService, SleeveDBService>();
             return services;
         }
     }
