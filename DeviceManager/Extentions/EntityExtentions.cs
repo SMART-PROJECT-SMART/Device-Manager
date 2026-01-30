@@ -16,5 +16,20 @@ namespace DeviceManager.Extentions
         public static IEnumerable<UAVRo> ToRo(this IEnumerable<UAV> uav) {
             return uav.Select(u => u.ToRo());
         }
+
+        public static Sleeve ToEntity(this CreateSleeveDTO dto)
+        {
+            return new Sleeve(dto.Name, dto.Location, dto.PortNumbers);
+        }
+
+        public static SleeveRo ToRo(this Sleeve sleeve)
+        {
+            return new SleeveRo(sleeve.Name, sleeve.Location, sleeve.PortNumbers);
+        }
+
+        public static IEnumerable<SleeveRo> ToRo(this IEnumerable<Sleeve> sleeves)
+        {
+            return sleeves.Select(s => s.ToRo());
+        }
     }
 }

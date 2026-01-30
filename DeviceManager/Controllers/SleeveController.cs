@@ -1,0 +1,70 @@
+using Microsoft.AspNetCore.Mvc;
+using DeviceManager.Database.MongoDB.Services.SleeveDBService;
+using DeviceManager.Models.Dto;
+using DeviceManager.Models.Ro;
+
+namespace DeviceManager.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class SleeveController : ControllerBase
+    {
+        private readonly ISleeveDBService _sleeveDbService;
+
+        public SleeveController(ISleeveDBService sleeveDbService)
+        {
+            _sleeveDbService = sleeveDbService;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<SleeveRo>>> GetAll(CancellationToken cancellationToken)
+        {
+            IEnumerable<SleeveRo> sleeves = await _sleeveDbService.GetAllSleevesAsync(cancellationToken);
+            return Ok(sleeves);
+        }
+
+        [HttpGet("{name}")]
+        public async Task<ActionResult<SleeveRo>> GetByName(string name, CancellationToken cancellationToken)
+        {
+            SleeveRo sleeve = await _sleeveDbService.GetSleeveByNameAsync(name, cancellationToken);
+            if (sleeve == null)
+            {
+                return NotFound();
+            }
+            return Ok(sleeve);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Create([FromBody] CreateSleeveDTO createSleeveDTO, CancellationToken cancellationToken)
+        {
+            bool created = await _sleeveDbService.CreateSleeveAsync(createSleeveDTO, cancellationToken);
+            if (!created)
+            {
+                return BadRequest();
+            }
+            return CreatedAtAction(nameof(GetByName), new { name = createSleeveDTO.Name }, null);
+        }
+
+        [HttpPut("{name}")]
+        public async Task<ActionResult> Update(string name, [FromBody] UpdateSleeveDTO updateSleeveDTO, CancellationToken cancellationToken)
+        {
+            bool updated = await _sleeveDbService.UpdateSleeveAsync(name, updateSleeveDTO, cancellationToken);
+            if (!updated)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
+
+        [HttpDelete("{name}")]
+        public async Task<ActionResult> Delete(string name, CancellationToken cancellationToken)
+        {
+            bool deleted = await _sleeveDbService.DeleteSleeveByNameAsync(name, cancellationToken);
+            if (!deleted)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
+    }
+}
