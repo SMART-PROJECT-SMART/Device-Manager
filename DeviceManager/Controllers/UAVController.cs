@@ -13,12 +13,12 @@ namespace DeviceManager.Controllers
     [ApiController]
     public class UAVController : ControllerBase
     {
-        private readonly IUAVDBService __uavDbService;
+        private readonly IUAVDBService _uavDbService;
         private readonly ISimulatorNotificationService _simulatorNotificationService;
 
-        public UAVController(IUAVDBService _uavDbService, ISimulatorNotificationService simulatorNotificationService)
+        public UAVController(IUAVDBService uavDbService, ISimulatorNotificationService simulatorNotificationService)
         {
-            __uavDbService = _uavDbService;
+            _uavDbService = uavDbService;
             _simulatorNotificationService = simulatorNotificationService;
         }
 
