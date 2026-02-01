@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
+using Core.Common.Enums;
 using DeviceManager.Database.MongoDB.Services.SleeveDBService;
 using DeviceManager.Models.Dto;
 using DeviceManager.Models.Ro;
+using DeviceManager.Services.TelemetryDeviceNotification;
 
 namespace DeviceManager.Controllers
 {
@@ -10,10 +12,12 @@ namespace DeviceManager.Controllers
     public class SleeveController : ControllerBase
     {
         private readonly ISleeveDBService _sleeveDbService;
+        private readonly ITelemetryDeviceNotificationService _telemetryDeviceNotificationService;
 
-        public SleeveController(ISleeveDBService sleeveDbService)
+        public SleeveController(ISleeveDBService sleeveDbService, ITelemetryDeviceNotificationService telemetryDeviceNotificationService)
         {
             _sleeveDbService = sleeveDbService;
+            _telemetryDeviceNotificationService = telemetryDeviceNotificationService;
         }
 
         [HttpGet]
@@ -42,6 +46,7 @@ namespace DeviceManager.Controllers
             {
                 return BadRequest();
             }
+            _ = _telemetryDeviceNotificationService.NotifySleeveChangedAsync(CrudOperation.Created, createSleeveDTO.Name, cancellationToken);
             return CreatedAtAction(nameof(GetByName), new { name = createSleeveDTO.Name }, null);
         }
 
@@ -53,6 +58,7 @@ namespace DeviceManager.Controllers
             {
                 return NotFound();
             }
+            _ = _telemetryDeviceNotificationService.NotifySleeveChangedAsync(CrudOperation.Updated, name, cancellationToken);
             return NoContent();
         }
 
@@ -64,6 +70,7 @@ namespace DeviceManager.Controllers
             {
                 return NotFound();
             }
+            _ = _telemetryDeviceNotificationService.NotifySleeveChangedAsync(CrudOperation.Deleted, name, cancellationToken);
             return NoContent();
         }
     }
