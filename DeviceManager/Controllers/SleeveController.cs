@@ -73,5 +73,27 @@ namespace DeviceManager.Controllers
             _ = _telemetryDeviceNotificationService.NotifySleeveChangedAsync(CrudOperation.Deleted, name, cancellationToken);
             return NoContent();
         }
+
+        [HttpGet("available-for-uav/{tailId}")]
+        public async Task<ActionResult<IEnumerable<int>>> GetAvailableForUAV(int tailId, CancellationToken cancellationToken)
+        {
+            IEnumerable<int> ports = await _sleeveDbService.GetAvailableSleeveForUAVAsync(tailId, cancellationToken);
+            if (ports == null || !ports.Any())
+            {
+                return NotFound();
+            }
+            return Ok(ports);
+        }
+
+        [HttpPost("release/{tailId}")]
+        public async Task<ActionResult> ReleaseByTailId(int tailId, CancellationToken cancellationToken)
+        {
+            bool released = await _sleeveDbService.ReleaseSleeveByTailIdAsync(tailId, cancellationToken);
+            if (!released)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
     }
 }

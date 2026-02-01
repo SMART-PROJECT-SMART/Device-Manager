@@ -70,5 +70,25 @@ namespace DeviceManager.Database.MongoDB.Repositories.SleeveRepository
             return _sleeveCollection.UpdateOneAsync(filter, combinedUpdate, null, cancellationToken)
                 .ContinueWith(task => task.Result.ModifiedCount > 0, cancellationToken);
         }
+
+        public async Task<IEnumerable<int>> GetAvailableSleeveForUAVAsync(int tailId, CancellationToken cancellationToken = default)
+        {
+            FilterDefinition<Sleeve> filter = Builders<Sleeve>.Filter.Eq(s => s.AssignedToTailId, null);
+            UpdateDefinition<Sleeve> update = Builders<Sleeve>.Update.Set(s => s.AssignedToTailId, tailId);
+            FindOneAndUpdateOptions<Sleeve> options = new FindOneAndUpdateOptions<Sleeve>
+            {
+                ReturnDocument = ReturnDocument.After
+            };
+            Sleeve updatedSleeve = await _sleeveCollection.FindOneAndUpdateAsync(filter, update, options, cancellationToken);
+            return updatedSleeve?.PortNumbers ?? Enumerable.Empty<int>();
+        }
+
+        public Task<bool> ReleaseSleeveByTailIdAsync(int tailId, CancellationToken cancellationToken = default)
+        {
+            FilterDefinition<Sleeve> filter = Builders<Sleeve>.Filter.Eq(s => s.AssignedToTailId, tailId);
+            UpdateDefinition<Sleeve> update = Builders<Sleeve>.Update.Set(s => s.AssignedToTailId, null);
+            return _sleeveCollection.UpdateOneAsync(filter, update, null, cancellationToken)
+                .ContinueWith(task => task.Result.ModifiedCount > 0, cancellationToken);
+        }
     }
 }

@@ -43,5 +43,17 @@ namespace DeviceManager.Database.MongoDB.Services.SleeveDBService
             bool isUpdated = await _sleeveRepository.UpdateSleeveAsync(name, updateSleeveDTO, cancellationToken);
             return isUpdated;
         }
+
+        public async Task<IEnumerable<int>> GetAvailableSleeveForUAVAsync(int tailId, CancellationToken cancellationToken = default)
+        {
+            IEnumerable<int> ports = await _sleeveRepository.GetAvailableSleeveForUAVAsync(tailId, cancellationToken);
+            return ports;
+        }
+
+        public async Task<bool> ReleaseSleeveByTailIdAsync(int tailId, CancellationToken cancellationToken = default)
+        {
+            bool isReleased = await _sleeveRepository.ReleaseSleeveByTailIdAsync(tailId, cancellationToken);
+            return isReleased;
+        }
     }
 }

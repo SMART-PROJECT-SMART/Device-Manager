@@ -10,6 +10,7 @@ namespace DeviceManager.Database.MongoDB.Entities
             Name = name;
             Location = location;
             PortNumbers = portNumbers;
+            AssignedToTailId = null;
         }
 
         [BsonRequired]
@@ -19,5 +20,6 @@ namespace DeviceManager.Database.MongoDB.Entities
         public Location Location { get; set; }
         [BsonRequired]
         public IEnumerable<int> PortNumbers { get; set; }
+        public int? AssignedToTailId { get; set; }
     }
 }

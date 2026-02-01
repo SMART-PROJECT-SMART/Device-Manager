@@ -12,5 +12,7 @@ namespace DeviceManager.Database.MongoDB.Repositories.SleeveRepository
         public Task<bool> DeleteSleeveAsync(string name, CancellationToken cancellationToken = default);
         public Task<IEnumerable<SleeveRo>> GetAllSleevesAsync(CancellationToken cancellationToken = default);
         public Task<bool> DoesSleeveExistsAsync(string name);
+        public Task<IEnumerable<int>> GetAvailableSleeveForUAVAsync(int tailId, CancellationToken cancellationToken = default);
+        public Task<bool> ReleaseSleeveByTailIdAsync(int tailId, CancellationToken cancellationToken = default);
     }
 }
