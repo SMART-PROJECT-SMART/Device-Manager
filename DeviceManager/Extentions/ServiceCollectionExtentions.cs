@@ -5,6 +5,7 @@ using DeviceManager.Database.MongoDB.Repositories.SleeveRepository;
 using DeviceManager.Database.MongoDB.Services.UAVDBService;
 using DeviceManager.Database.MongoDB.Services.UAVDBService.Interfaces;
 using DeviceManager.Database.MongoDB.Services.SleeveDBService;
+using DeviceManager.Services.SimulatorNotification;
 using MongoDB.Driver;
 using System.Text.Json.Serialization;
 
@@ -23,6 +24,7 @@ namespace DeviceManager.Extentions
         }
         public static IServiceCollection AddAppConfiguration(this IServiceCollection services, IConfiguration configuration) {
             services.Configure<MongoDbConfiguration>(configuration.GetSection(DeviceManagerConstants.Configuration.MONGODB_CONFIG_SECTION));
+            services.Configure<SimulatorConfiguration>(configuration.GetSection(DeviceManagerConstants.Configuration.SIMULATOR_CONFIG_SECTION));
             services.AddSingleton<IMongoClient>(sp =>
             {
                 MongoDbConfiguration config = sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<MongoDbConfiguration>>().Value;
@@ -35,6 +37,11 @@ namespace DeviceManager.Extentions
             services.AddSingleton<ISleeveRepository, SleeveRepository>();
             services.AddSingleton<IUAVDBService, UAVDBService>();
             services.AddSingleton<ISleeveDBService, SleeveDBService>();
+            return services;
+        }
+
+        public static IServiceCollection AddSimulatorNotification(this IServiceCollection services) {
+            services.AddHttpClient<ISimulatorNotificationService, SimulatorNotificationService>();
             return services;
         }
     }
