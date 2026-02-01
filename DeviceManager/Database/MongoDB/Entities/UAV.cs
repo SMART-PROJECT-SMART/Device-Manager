@@ -15,6 +15,7 @@ namespace DeviceManager.Database.MongoDB.Entities
         }
 
         [BsonRequired]
+        [BsonId]
         public int TailId { get; set; }
         [BsonRequired]
         public PlatformType PlatformType { get; set; }
