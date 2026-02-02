@@ -11,6 +11,7 @@ namespace DeviceManager.Extentions
             return new UAV(dto.TailId, dto.platformType, dto.BaseLocation);
         }
         public static UAVRo ToRo(this UAV uav) {
+            if (uav == null) return null;
             return new UAVRo(uav.TailId, uav.PlatformType, uav.BaseLocation);
         }
         public static IEnumerable<UAVRo> ToRo(this IEnumerable<UAV> uav) {
@@ -24,6 +25,7 @@ namespace DeviceManager.Extentions
 
         public static SleeveRo ToRo(this Sleeve sleeve)
         {
+            if (sleeve == null) return null;
             return new SleeveRo(sleeve.Name, sleeve.Location, sleeve.PortNumbers);
         }
 
