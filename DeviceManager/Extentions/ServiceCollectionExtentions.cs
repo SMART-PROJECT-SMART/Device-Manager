@@ -15,11 +15,7 @@ namespace DeviceManager.Extentions
     public static class ServiceCollectionExtentions
     {
         public static IServiceCollection AddWebApi(this IServiceCollection services) {
-            services.AddControllers()
-                .AddJsonOptions(options =>
-                {
-                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-                });
+            services.AddControllers();
             services.AddEndpointsApiExplorer();
             return services;
         }
