@@ -6,13 +6,13 @@ namespace DeviceManager.Repositories.SleeveRepository.Interfaces
 {
     public interface ISleeveRepository
     {
-        public Task<SleeveRo> GetSleeveByNameAsync(string name, CancellationToken cancellationToken = default);
-        public Task<Sleeve> CreateSleeveAsync(CreateSleeveDTO createSleeveDTO, CancellationToken cancellationToken = default);
-        public Task<bool> UpdateSleeveAsync(string name, UpdateSleeveDTO updateSleeveDTO, CancellationToken cancellationToken = default);
-        public Task<bool> DeleteSleeveAsync(string name, CancellationToken cancellationToken = default);
-        public Task<IEnumerable<SleeveRo>> GetAllSleevesAsync(CancellationToken cancellationToken = default);
-        public Task<bool> DoesSleeveExistsAsync(string name);
-        public Task<IEnumerable<int>> GetAvailableSleeveForUAVAsync(int tailId, CancellationToken cancellationToken = default);
-        public Task<bool> ReleaseSleeveByTailIdAsync(int tailId, CancellationToken cancellationToken = default);
+        Task<SleeveRo> GetSleeveByNameAsync(string name, CancellationToken cancellationToken = default);
+        Task<Sleeve> CreateSleeveAsync(CreateSleeveDTO createSleeveDTO, CancellationToken cancellationToken = default);
+        Task<bool> UpdateSleeveAsync(string name, UpdateSleeveDTO updateSleeveDTO, CancellationToken cancellationToken = default);
+        Task<bool> DeleteSleeveAsync(string name, CancellationToken cancellationToken = default);
+        Task<IEnumerable<SleeveRo>> GetAllSleevesAsync(CancellationToken cancellationToken = default);
+        Task<bool> DoesSleeveExistAsync(string name, CancellationToken cancellationToken = default);
+        Task<IEnumerable<int>> GetAvailableSleeveForUAVAsync(int tailId, CancellationToken cancellationToken = default);
+        Task<bool> ReleaseSleeveByTailIdAsync(int tailId, CancellationToken cancellationToken = default);
     }
 }

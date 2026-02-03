@@ -20,7 +20,7 @@ namespace DeviceManager.Services.SimulatorNotification
         public async Task NotifyUAVChangedAsync(CrudOperation operation, int tailId, CancellationToken cancellationToken = default)
         {
             UAVChangedNotificationDTO notification = new UAVChangedNotificationDTO(operation, tailId);
-            string url = $"{_simulatorConfig.BaseUrl}{_simulatorConfig.WebhookEndpoint}";
+            string url = new Uri(new Uri(_simulatorConfig.BaseUrl), _simulatorConfig.WebhookEndpoint).ToString();
             await _httpClient.PostAsJsonAsync(url, notification, cancellationToken);
         }
     }

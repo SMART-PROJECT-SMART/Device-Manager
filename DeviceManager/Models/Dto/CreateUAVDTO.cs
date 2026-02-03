@@ -9,9 +9,8 @@ namespace DeviceManager.Models.Dto
         [Required]
         public int TailId { get; set; }
         [Required]
-        public PlatformType platformType { get; set; }
+        public PlatformType PlatformType { get; set; }
         [Required]
         public Location BaseLocation { get; set; }
-
     }
 }

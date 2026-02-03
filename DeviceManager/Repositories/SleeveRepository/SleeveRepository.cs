@@ -34,15 +34,15 @@ namespace DeviceManager.Services.SleeveRepository
             return result.DeletedCount > 0;
         }
 
-        public Task<bool> DoesSleeveExistsAsync(string name)
+        public Task<bool> DoesSleeveExistAsync(string name, CancellationToken cancellationToken = default)
         {
             FilterDefinition<Sleeve> filter = Builders<Sleeve>.Filter.Eq(s => s.Name, name);
-            return _sleeveCollection.Find(filter).AnyAsync();
+            return _sleeveCollection.Find(filter).AnyAsync(cancellationToken);
         }
 
         public async Task<IEnumerable<SleeveRo>> GetAllSleevesAsync(CancellationToken cancellationToken = default)
         {
-            IEnumerable<Sleeve> sleeves = await _sleeveCollection.Find(_ => true).ToListAsync(cancellationToken);
+            IEnumerable<Sleeve> sleeves = await _sleeveCollection.Find(FilterDefinition<Sleeve>.Empty).ToListAsync(cancellationToken);
             return sleeves.ToRo();
         }
 

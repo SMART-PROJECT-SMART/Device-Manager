@@ -6,11 +6,11 @@ namespace DeviceManager.Repositories.UAVRepository.Interfaces
 {
     public interface IUAVRepository
     {
-        public Task<UAVRo> GetUAVByTailIdAsync(int tailId, CancellationToken cancellationToken = default);
-        public Task<UAV> CreateUAVAsync(CreateUAVDTO createUAVDTO, CancellationToken cancellationToken = default);
-        public Task<bool> UpdateUAVAsync(int tailId, UpdateUAVDto updateUAVDto, CancellationToken cancellationToken = default);
-        public Task<bool> DeleteUAVAsync(int tailId, CancellationToken cancellationToken = default);
-        public Task<IEnumerable<UAVRo>> GetAllUAVsAsync(CancellationToken cancellationToken = default);
-        public Task<bool> DoesUAVExistsAsync(int tailId);
+        Task<UAVRo> GetUAVByTailIdAsync(int tailId, CancellationToken cancellationToken = default);
+        Task<UAV> CreateUAVAsync(CreateUAVDTO createUAVDTO, CancellationToken cancellationToken = default);
+        Task<bool> UpdateUAVAsync(int tailId, UpdateUAVDto updateUAVDto, CancellationToken cancellationToken = default);
+        Task<bool> DeleteUAVAsync(int tailId, CancellationToken cancellationToken = default);
+        Task<IEnumerable<UAVRo>> GetAllUAVsAsync(CancellationToken cancellationToken = default);
+        Task<bool> DoesUAVExistAsync(int tailId, CancellationToken cancellationToken = default);
     }
 }

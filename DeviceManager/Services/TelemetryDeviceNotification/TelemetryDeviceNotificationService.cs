@@ -20,7 +20,7 @@ namespace DeviceManager.Services.TelemetryDeviceNotification
         public async Task NotifySleeveChangedAsync(CrudOperation operation, string name, CancellationToken cancellationToken = default)
         {
             SleeveChangedNotificationDTO notification = new SleeveChangedNotificationDTO(operation, name);
-            string url = $"{_telemetryDeviceConfig.BaseUrl}{_telemetryDeviceConfig.WebhookEndpoint}";
+            string url = new Uri(new Uri(_telemetryDeviceConfig.BaseUrl), _telemetryDeviceConfig.WebhookEndpoint).ToString();
             await _httpClient.PostAsJsonAsync(url, notification, cancellationToken);
         }
     }

@@ -34,15 +34,15 @@ namespace DeviceManager.Repositories.UAVRepository
             return result.DeletedCount > 0;
         }
 
-        public Task<bool> DoesUAVExistsAsync(int tailId)
+        public Task<bool> DoesUAVExistAsync(int tailId, CancellationToken cancellationToken = default)
         {
             FilterDefinition<UAV> filter = Builders<UAV>.Filter.Eq(u => u.TailId, tailId);
-            return _uavCollection.Find(filter).AnyAsync();
+            return _uavCollection.Find(filter).AnyAsync(cancellationToken);
         }
 
         public async Task<IEnumerable<UAVRo>> GetAllUAVsAsync(CancellationToken cancellationToken = default)
         {
-            IEnumerable<UAV> uavs = await _uavCollection.Find(_ => true).ToListAsync(cancellationToken);
+            IEnumerable<UAV> uavs = await _uavCollection.Find(FilterDefinition<UAV>.Empty).ToListAsync(cancellationToken);
             return uavs.ToRo();
         }
 

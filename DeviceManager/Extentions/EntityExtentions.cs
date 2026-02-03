@@ -7,7 +7,7 @@ namespace DeviceManager.Extentions
     public static class EntityExtentions
     {
         public static UAV ToEntity(this CreateUAVDTO dto) {
-            return new UAV(dto.TailId, dto.platformType, dto.BaseLocation);
+            return new UAV(dto.TailId, dto.PlatformType, dto.BaseLocation);
         }
         public static UAVRo ToRo(this UAV uav) {
             if (uav == null) return null;
