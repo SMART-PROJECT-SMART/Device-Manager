@@ -31,10 +31,10 @@ namespace DeviceManager.Extentions
             return services;
         }
         public static IServiceCollection AddMongoDBServices(this IServiceCollection services) {
-            services.AddSingleton<IUAVRepository, UAVRepository>();
-            services.AddSingleton<ISleeveRepository, SleeveRepository>();
-            services.AddSingleton<IUAVDBService, UAVDBService>();
-            services.AddSingleton<ISleeveDBService, SleeveDBService>();
+            services.AddScoped<IUAVRepository, UAVRepository>();
+            services.AddScoped<ISleeveRepository, SleeveRepository>();
+            services.AddScoped<IUAVDBService, UAVDBService>();
+            services.AddScoped<ISleeveDBService, SleeveDBService>();
             return services;
         }
 
