@@ -1,7 +1,6 @@
 ﻿using DeviceManager.Database.MongoDB.Entities;
 using DeviceManager.Models.Dto;
 using DeviceManager.Models.Ro;
-using SharpCompress.Common.Tar;
 
 namespace DeviceManager.Extentions
 {

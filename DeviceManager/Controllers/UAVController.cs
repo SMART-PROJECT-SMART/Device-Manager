@@ -1,11 +1,8 @@
 ﻿
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Core.Common.Enums;
 using DeviceManager.Database.MongoDB.Services.UAVDBService.Interfaces;
 using DeviceManager.Models.Dto;
 using DeviceManager.Models.Ro;
-using DeviceManager.Services.SimulatorNotification;
 
 namespace DeviceManager.Controllers
 {
@@ -14,12 +11,10 @@ namespace DeviceManager.Controllers
     public class UAVController : ControllerBase
     {
         private readonly IUAVDBService _uavDbService;
-        private readonly ISimulatorNotificationService _simulatorNotificationService;
 
-        public UAVController(IUAVDBService uavDbService, ISimulatorNotificationService simulatorNotificationService)
+        public UAVController(IUAVDBService uavDbService)
         {
             _uavDbService = uavDbService;
-            _simulatorNotificationService = simulatorNotificationService;
         }
 
         [HttpGet]
@@ -48,7 +43,6 @@ namespace DeviceManager.Controllers
             {
                 return BadRequest();
             }
-            _ = _simulatorNotificationService.NotifyUAVChangedAsync(CrudOperation.Created, createUAVDTO.TailId, cancellationToken);
             return CreatedAtAction(nameof(GetByTailId), new { tailId = createUAVDTO.TailId }, null);
         }
 
@@ -60,7 +54,6 @@ namespace DeviceManager.Controllers
             {
                 return NotFound();
             }
-            _ = _simulatorNotificationService.NotifyUAVChangedAsync(CrudOperation.Updated, tailId, cancellationToken);
             return NoContent();
         }
 
@@ -72,7 +65,6 @@ namespace DeviceManager.Controllers
             {
                 return NotFound();
             }
-            _ = _simulatorNotificationService.NotifyUAVChangedAsync(CrudOperation.Deleted, tailId, cancellationToken);
             return NoContent();
         }
     }
