@@ -45,13 +45,14 @@ namespace DeviceManager.Database.MongoDB.Repositories.UAVRepository
             return uavs.ToRo();
         }
 
-        public Task<UAVRo> GetUAVByTailIdAsync(int tailId, CancellationToken cancellationToken = default)
+        public async Task<UAVRo> GetUAVByTailIdAsync(int tailId, CancellationToken cancellationToken = default)
         {
             FilterDefinition<UAV> filter = Builders<UAV>.Filter.Eq(u => u.TailId, tailId);
-            return _uavCollection.Find(filter).FirstOrDefaultAsync(cancellationToken).ContinueWith(task => task.Result.ToRo(), cancellationToken);
+            UAV uav = await _uavCollection.Find(filter).FirstOrDefaultAsync(cancellationToken);
+            return uav.ToRo();
         }
 
-        public Task<bool> UpdateUAVAsync(int tailId, UpdateUAVDto updateUAVDto, CancellationToken cancellationToken = default)
+        public async Task<bool> UpdateUAVAsync(int tailId, UpdateUAVDto updateUAVDto, CancellationToken cancellationToken = default)
         {
             FilterDefinition<UAV> filter = Builders<UAV>.Filter.Eq(u => u.TailId, tailId);
             List<UpdateDefinition<UAV>> updates = new List<UpdateDefinition<UAV>>();
@@ -62,10 +63,12 @@ namespace DeviceManager.Database.MongoDB.Repositories.UAVRepository
             if (updateUAVDto.BaseLocation != null)
                 updates.Add(Builders<UAV>.Update.Set(u => u.BaseLocation, updateUAVDto.BaseLocation));
 
-            UpdateDefinition<UAV> combinedUpdate = Builders<UAV>.Update.Combine(updates);
+            if (updates.Count == 0)
+                return false;
 
-            return _uavCollection.UpdateOneAsync(filter, combinedUpdate, null, cancellationToken)
-                .ContinueWith(task => task.Result.ModifiedCount > 0, cancellationToken);
+            UpdateDefinition<UAV> combinedUpdate = Builders<UAV>.Update.Combine(updates);
+            UpdateResult result = await _uavCollection.UpdateOneAsync(filter, combinedUpdate, null, cancellationToken);
+            return result.ModifiedCount > 0;
         }
     }
 }

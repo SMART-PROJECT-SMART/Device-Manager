@@ -45,13 +45,14 @@ namespace DeviceManager.Database.MongoDB.Repositories.SleeveRepository
             return sleeves.ToRo();
         }
 
-        public Task<SleeveRo> GetSleeveByNameAsync(string name, CancellationToken cancellationToken = default)
+        public async Task<SleeveRo> GetSleeveByNameAsync(string name, CancellationToken cancellationToken = default)
         {
             FilterDefinition<Sleeve> filter = Builders<Sleeve>.Filter.Eq(s => s.Name, name);
-            return _sleeveCollection.Find(filter).FirstOrDefaultAsync(cancellationToken).ContinueWith(task => task.Result.ToRo(), cancellationToken);
+            Sleeve sleeve = await _sleeveCollection.Find(filter).FirstOrDefaultAsync(cancellationToken);
+            return sleeve.ToRo();
         }
 
-        public Task<bool> UpdateSleeveAsync(string name, UpdateSleeveDTO updateSleeveDTO, CancellationToken cancellationToken = default)
+        public async Task<bool> UpdateSleeveAsync(string name, UpdateSleeveDTO updateSleeveDTO, CancellationToken cancellationToken = default)
         {
             FilterDefinition<Sleeve> filter = Builders<Sleeve>.Filter.Eq(s => s.Name, name);
             List<UpdateDefinition<Sleeve>> updates = new List<UpdateDefinition<Sleeve>>();
@@ -65,10 +66,12 @@ namespace DeviceManager.Database.MongoDB.Repositories.SleeveRepository
             if (updateSleeveDTO.PortNumbers != null)
                 updates.Add(Builders<Sleeve>.Update.Set(s => s.PortNumbers, updateSleeveDTO.PortNumbers));
 
-            UpdateDefinition<Sleeve> combinedUpdate = Builders<Sleeve>.Update.Combine(updates);
+            if (updates.Count == 0)
+                return false;
 
-            return _sleeveCollection.UpdateOneAsync(filter, combinedUpdate, null, cancellationToken)
-                .ContinueWith(task => task.Result.ModifiedCount > 0, cancellationToken);
+            UpdateDefinition<Sleeve> combinedUpdate = Builders<Sleeve>.Update.Combine(updates);
+            UpdateResult result = await _sleeveCollection.UpdateOneAsync(filter, combinedUpdate, null, cancellationToken);
+            return result.ModifiedCount > 0;
         }
 
         public async Task<IEnumerable<int>> GetAvailableSleeveForUAVAsync(int tailId, CancellationToken cancellationToken = default)
@@ -83,12 +86,12 @@ namespace DeviceManager.Database.MongoDB.Repositories.SleeveRepository
             return updatedSleeve?.PortNumbers ?? Enumerable.Empty<int>();
         }
 
-        public Task<bool> ReleaseSleeveByTailIdAsync(int tailId, CancellationToken cancellationToken = default)
+        public async Task<bool> ReleaseSleeveByTailIdAsync(int tailId, CancellationToken cancellationToken = default)
         {
             FilterDefinition<Sleeve> filter = Builders<Sleeve>.Filter.Eq(s => s.AssignedToTailId, tailId);
             UpdateDefinition<Sleeve> update = Builders<Sleeve>.Update.Set(s => s.AssignedToTailId, null);
-            return _sleeveCollection.UpdateOneAsync(filter, update, null, cancellationToken)
-                .ContinueWith(task => task.Result.ModifiedCount > 0, cancellationToken);
+            UpdateResult result = await _sleeveCollection.UpdateOneAsync(filter, update, null, cancellationToken);
+            return result.ModifiedCount > 0;
         }
     }
 }

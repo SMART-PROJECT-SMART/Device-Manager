@@ -20,28 +20,24 @@ namespace DeviceManager.Database.MongoDB.Services.UAVDBService
             return createdUav != null;
         }
 
-        public async Task<bool> DeleteUAVByTailIdAsync(int tailId, CancellationToken cancellationToken = default)
+        public Task<bool> DeleteUAVByTailIdAsync(int tailId, CancellationToken cancellationToken = default)
         {
-            bool isDeleted = await uavRepository.DeleteUAVAsync(tailId, cancellationToken);
-            return isDeleted;
+            return uavRepository.DeleteUAVAsync(tailId, cancellationToken);
         }
 
-        public async Task<IEnumerable<UAVRo>> GetAllUAVsAsync(CancellationToken cancellationToken = default)
+        public Task<IEnumerable<UAVRo>> GetAllUAVsAsync(CancellationToken cancellationToken = default)
         {
-            IEnumerable<UAVRo> uavList = await uavRepository.GetAllUAVsAsync(cancellationToken);
-            return uavList;
+            return uavRepository.GetAllUAVsAsync(cancellationToken);
         }
 
-        public async Task<UAVRo> GetUAVByTailIdAsync(int tailId, CancellationToken cancellationToken = default)
+        public Task<UAVRo> GetUAVByTailIdAsync(int tailId, CancellationToken cancellationToken = default)
         {
-            UAVRo uav = await uavRepository.GetUAVByTailIdAsync(tailId, cancellationToken);
-            return uav;
+            return uavRepository.GetUAVByTailIdAsync(tailId, cancellationToken);
         }
 
-        public async Task<bool> UpdateUAVAsync(int tailId, UpdateUAVDto updateUAVDto, CancellationToken cancellationToken = default)
+        public Task<bool> UpdateUAVAsync(int tailId, UpdateUAVDto updateUAVDto, CancellationToken cancellationToken = default)
         {
-            bool isUpdated = await uavRepository.UpdateUAVAsync(tailId, updateUAVDto, cancellationToken);
-            return isUpdated;
+            return uavRepository.UpdateUAVAsync(tailId, updateUAVDto, cancellationToken);
         }
     }
 }

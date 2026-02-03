@@ -20,40 +20,34 @@ namespace DeviceManager.Database.MongoDB.Services.SleeveDBService
             return createdSleeve != null;
         }
 
-        public async Task<bool> DeleteSleeveByNameAsync(string name, CancellationToken cancellationToken = default)
+        public Task<bool> DeleteSleeveByNameAsync(string name, CancellationToken cancellationToken = default)
         {
-            bool isDeleted = await _sleeveRepository.DeleteSleeveAsync(name, cancellationToken);
-            return isDeleted;
+            return _sleeveRepository.DeleteSleeveAsync(name, cancellationToken);
         }
 
-        public async Task<IEnumerable<SleeveRo>> GetAllSleevesAsync(CancellationToken cancellationToken = default)
+        public Task<IEnumerable<SleeveRo>> GetAllSleevesAsync(CancellationToken cancellationToken = default)
         {
-            IEnumerable<SleeveRo> sleeveList = await _sleeveRepository.GetAllSleevesAsync(cancellationToken);
-            return sleeveList;
+            return _sleeveRepository.GetAllSleevesAsync(cancellationToken);
         }
 
-        public async Task<SleeveRo> GetSleeveByNameAsync(string name, CancellationToken cancellationToken = default)
+        public Task<SleeveRo> GetSleeveByNameAsync(string name, CancellationToken cancellationToken = default)
         {
-            SleeveRo sleeve = await _sleeveRepository.GetSleeveByNameAsync(name, cancellationToken);
-            return sleeve;
+            return _sleeveRepository.GetSleeveByNameAsync(name, cancellationToken);
         }
 
-        public async Task<bool> UpdateSleeveAsync(string name, UpdateSleeveDTO updateSleeveDTO, CancellationToken cancellationToken = default)
+        public Task<bool> UpdateSleeveAsync(string name, UpdateSleeveDTO updateSleeveDTO, CancellationToken cancellationToken = default)
         {
-            bool isUpdated = await _sleeveRepository.UpdateSleeveAsync(name, updateSleeveDTO, cancellationToken);
-            return isUpdated;
+            return _sleeveRepository.UpdateSleeveAsync(name, updateSleeveDTO, cancellationToken);
         }
 
-        public async Task<IEnumerable<int>> GetAvailableSleeveForUAVAsync(int tailId, CancellationToken cancellationToken = default)
+        public Task<IEnumerable<int>> GetAvailableSleeveForUAVAsync(int tailId, CancellationToken cancellationToken = default)
         {
-            IEnumerable<int> ports = await _sleeveRepository.GetAvailableSleeveForUAVAsync(tailId, cancellationToken);
-            return ports;
+            return _sleeveRepository.GetAvailableSleeveForUAVAsync(tailId, cancellationToken);
         }
 
-        public async Task<bool> ReleaseSleeveByTailIdAsync(int tailId, CancellationToken cancellationToken = default)
+        public Task<bool> ReleaseSleeveByTailIdAsync(int tailId, CancellationToken cancellationToken = default)
         {
-            bool isReleased = await _sleeveRepository.ReleaseSleeveByTailIdAsync(tailId, cancellationToken);
-            return isReleased;
+            return _sleeveRepository.ReleaseSleeveByTailIdAsync(tailId, cancellationToken);
         }
     }
 }
