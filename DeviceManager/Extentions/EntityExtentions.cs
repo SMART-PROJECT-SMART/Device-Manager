@@ -1,4 +1,4 @@
-﻿using DeviceManager.Database.MongoDB.Entities;
+﻿using DeviceManager.Models;
 using DeviceManager.Models.Dto;
 using DeviceManager.Models.Ro;
 

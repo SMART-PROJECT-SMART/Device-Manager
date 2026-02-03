@@ -1,13 +1,14 @@
 using DeviceManager.Common.Constants;
-using DeviceManager.Config;
-using DeviceManager.Database.MongoDB.Entities;
 using DeviceManager.Extentions;
+using DeviceManager.Models;
+using DeviceManager.Models.Config;
 using DeviceManager.Models.Dto;
 using DeviceManager.Models.Ro;
+using DeviceManager.Repositories.UAVRepository.Interfaces;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
-namespace DeviceManager.Database.MongoDB.Repositories.UAVRepository
+namespace DeviceManager.Repositories.UAVRepository
 {
     public class UAVRepository : IUAVRepository
     {

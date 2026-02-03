@@ -1,8 +1,8 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
-using DeviceManager.Database.MongoDB.Services.UAVDBService.Interfaces;
 using DeviceManager.Models.Dto;
 using DeviceManager.Models.Ro;
+using DeviceManager.Services.UAVDBService.Interfaces;
 
 namespace DeviceManager.Controllers
 {
@@ -10,9 +10,9 @@ namespace DeviceManager.Controllers
     [ApiController]
     public class UAVController : ControllerBase
     {
-        private readonly IUAVDBService _uavDbService;
+        private readonly IUAVService _uavDbService;
 
-        public UAVController(IUAVDBService uavDbService)
+        public UAVController(IUAVService uavDbService)
         {
             _uavDbService = uavDbService;
         }

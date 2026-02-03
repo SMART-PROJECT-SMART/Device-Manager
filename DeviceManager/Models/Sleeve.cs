@@ -1,7 +1,7 @@
 using Core.Models;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace DeviceManager.Database.MongoDB.Entities
+namespace DeviceManager.Models
 {
     public class Sleeve
     {

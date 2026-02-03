@@ -1,6 +1,6 @@
 using Core.Common.Enums;
 
-namespace DeviceManager.Services.TelemetryDeviceNotification
+namespace DeviceManager.Services.TelemetryDeviceNotification.Interfaces
 {
     public interface ITelemetryDeviceNotificationService
     {

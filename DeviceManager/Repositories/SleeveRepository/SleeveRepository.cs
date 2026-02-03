@@ -1,13 +1,14 @@
 using DeviceManager.Common.Constants;
 using DeviceManager.Config;
-using DeviceManager.Database.MongoDB.Entities;
 using DeviceManager.Extentions;
+using DeviceManager.Models;
 using DeviceManager.Models.Dto;
 using DeviceManager.Models.Ro;
+using DeviceManager.Repositories.SleeveRepository.Interfaces;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
-namespace DeviceManager.Database.MongoDB.Repositories.SleeveRepository
+namespace DeviceManager.Services.SleeveRepository
 {
     public class SleeveRepository : ISleeveRepository
     {

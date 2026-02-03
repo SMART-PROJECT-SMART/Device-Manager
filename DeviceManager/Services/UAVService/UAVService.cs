@@ -1,19 +1,19 @@
 ﻿using Core.Common.Enums;
-using DeviceManager.Database.MongoDB.Entities;
-using DeviceManager.Database.MongoDB.Repositories.UAVRepository;
-using DeviceManager.Database.MongoDB.Services.UAVDBService.Interfaces;
+using DeviceManager.Models;
 using DeviceManager.Models.Dto;
 using DeviceManager.Models.Ro;
-using DeviceManager.Services.SimulatorNotification;
+using DeviceManager.Repositories.UAVRepository.Interfaces;
+using DeviceManager.Services.SimulatorNotification.Interfaces;
+using DeviceManager.Services.UAVDBService.Interfaces;
 
-namespace DeviceManager.Database.MongoDB.Services.UAVDBService
+namespace DeviceManager.Services.UAVDBService
 {
-    public class UAVDBService : IUAVDBService
+    public class UAVService : IUAVService
     {
         private readonly IUAVRepository _uavRepository;
         private readonly ISimulatorNotificationService _simulatorNotificationService;
 
-        public UAVDBService(
+        public UAVService(
             IUAVRepository uavRepository,
             ISimulatorNotificationService simulatorNotificationService)
         {

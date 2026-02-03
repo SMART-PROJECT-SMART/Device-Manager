@@ -1,14 +1,19 @@
 ﻿using DeviceManager.Common.Constants;
 using DeviceManager.Config;
-using DeviceManager.Database.MongoDB.Repositories.UAVRepository;
-using DeviceManager.Database.MongoDB.Repositories.SleeveRepository;
-using DeviceManager.Database.MongoDB.Services.UAVDBService;
-using DeviceManager.Database.MongoDB.Services.UAVDBService.Interfaces;
-using DeviceManager.Database.MongoDB.Services.SleeveDBService;
 using DeviceManager.Services.SimulatorNotification;
 using DeviceManager.Services.TelemetryDeviceNotification;
 using MongoDB.Driver;
 using System.Text.Json.Serialization;
+using DeviceManager.Services.MongoDB.SleeveDBService;
+using DeviceManager.Services.SleeveRepository;
+using DeviceManager.Services.UAVDBService;
+using DeviceManager.Services.UAVDBService.Interfaces;
+using DeviceManager.Repositories.UAVRepository;
+using DeviceManager.Repositories.UAVRepository.Interfaces;
+using DeviceManager.Services.SimulatorNotification.Interfaces;
+using DeviceManager.Services.SleeveDBService.Interfaces;
+using DeviceManager.Repositories.SleeveRepository.Interfaces;
+using DeviceManager.Services.TelemetryDeviceNotification.Interfaces;
 
 namespace DeviceManager.Extentions
 {
@@ -33,8 +38,8 @@ namespace DeviceManager.Extentions
         public static IServiceCollection AddMongoDBServices(this IServiceCollection services) {
             services.AddScoped<IUAVRepository, UAVRepository>();
             services.AddScoped<ISleeveRepository, SleeveRepository>();
-            services.AddScoped<IUAVDBService, UAVDBService>();
-            services.AddScoped<ISleeveDBService, SleeveDBService>();
+            services.AddScoped<IUAVService, UAVService>();
+            services.AddScoped<ISleeveService, SleeveService>();
             return services;
         }
 

@@ -1,6 +1,6 @@
 using Core.Common.Enums;
 
-namespace DeviceManager.Services.SimulatorNotification
+namespace DeviceManager.Services.SimulatorNotification.Interfaces
 {
     public interface ISimulatorNotificationService
     {

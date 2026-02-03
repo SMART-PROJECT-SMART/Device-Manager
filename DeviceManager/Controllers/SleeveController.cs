@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using DeviceManager.Database.MongoDB.Services.SleeveDBService;
 using DeviceManager.Models.Dto;
 using DeviceManager.Models.Ro;
+using DeviceManager.Services.SleeveDBService.Interfaces;
 
 namespace DeviceManager.Controllers
 {
@@ -9,9 +9,9 @@ namespace DeviceManager.Controllers
     [ApiController]
     public class SleeveController : ControllerBase
     {
-        private readonly ISleeveDBService _sleeveDbService;
+        private readonly ISleeveService _sleeveDbService;
 
-        public SleeveController(ISleeveDBService sleeveDbService)
+        public SleeveController(ISleeveService sleeveDbService)
         {
             _sleeveDbService = sleeveDbService;
         }

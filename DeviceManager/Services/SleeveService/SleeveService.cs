@@ -1,18 +1,19 @@
 using Core.Common.Enums;
-using DeviceManager.Database.MongoDB.Entities;
-using DeviceManager.Database.MongoDB.Repositories.SleeveRepository;
+using DeviceManager.Models;
 using DeviceManager.Models.Dto;
 using DeviceManager.Models.Ro;
-using DeviceManager.Services.TelemetryDeviceNotification;
+using DeviceManager.Repositories.SleeveRepository.Interfaces;
+using DeviceManager.Services.SleeveDBService.Interfaces;
+using DeviceManager.Services.TelemetryDeviceNotification.Interfaces;
 
-namespace DeviceManager.Database.MongoDB.Services.SleeveDBService
+namespace DeviceManager.Services.MongoDB.SleeveDBService
 {
-    public class SleeveDBService : ISleeveDBService
+    public class SleeveService : ISleeveService
     {
         private readonly ISleeveRepository _sleeveRepository;
         private readonly ITelemetryDeviceNotificationService _telemetryDeviceNotificationService;
 
-        public SleeveDBService(
+        public SleeveService(
             ISleeveRepository sleeveRepository,
             ITelemetryDeviceNotificationService telemetryDeviceNotificationService)
         {

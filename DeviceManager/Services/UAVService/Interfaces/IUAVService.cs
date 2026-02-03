@@ -1,9 +1,9 @@
 ﻿using DeviceManager.Models.Dto;
 using DeviceManager.Models.Ro;
 
-namespace DeviceManager.Database.MongoDB.Services.UAVDBService.Interfaces
+namespace DeviceManager.Services.UAVDBService.Interfaces
 {
-    public interface IUAVDBService
+    public interface IUAVService
     {
         public Task<UAVRo> GetUAVByTailIdAsync(int tailId,CancellationToken cancellationToken = default);
         public Task<bool> CreateUAVAsync(CreateUAVDTO createUAVDTO, CancellationToken cancellationToken = default);

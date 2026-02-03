@@ -1,8 +1,8 @@
-using DeviceManager.Database.MongoDB.Entities;
+using DeviceManager.Models;
 using DeviceManager.Models.Dto;
 using DeviceManager.Models.Ro;
 
-namespace DeviceManager.Database.MongoDB.Repositories.SleeveRepository
+namespace DeviceManager.Repositories.SleeveRepository.Interfaces
 {
     public interface ISleeveRepository
     {

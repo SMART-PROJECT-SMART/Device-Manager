@@ -1,9 +1,9 @@
 using DeviceManager.Models.Dto;
 using DeviceManager.Models.Ro;
 
-namespace DeviceManager.Database.MongoDB.Services.SleeveDBService
+namespace DeviceManager.Services.SleeveDBService.Interfaces
 {
-    public interface ISleeveDBService
+    public interface ISleeveService
     {
         public Task<SleeveRo> GetSleeveByNameAsync(string name, CancellationToken cancellationToken = default);
         public Task<bool> CreateSleeveAsync(CreateSleeveDTO createSleeveDTO, CancellationToken cancellationToken = default);

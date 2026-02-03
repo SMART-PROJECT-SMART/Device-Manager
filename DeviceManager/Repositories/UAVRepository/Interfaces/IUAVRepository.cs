@@ -1,8 +1,8 @@
-using DeviceManager.Database.MongoDB.Entities;
+using DeviceManager.Models;
 using DeviceManager.Models.Dto;
 using DeviceManager.Models.Ro;
 
-namespace DeviceManager.Database.MongoDB.Repositories.UAVRepository
+namespace DeviceManager.Repositories.UAVRepository.Interfaces
 {
     public interface IUAVRepository
     {
