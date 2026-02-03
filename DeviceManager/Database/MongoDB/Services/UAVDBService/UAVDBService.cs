@@ -8,36 +8,36 @@ namespace DeviceManager.Database.MongoDB.Services.UAVDBService
 {
     public class UAVDBService : IUAVDBService
     {
-        private readonly IUAVRepository uavRepository;
-        public UAVDBService(IUAVRepository uavRepository)
+        private readonly IUAVRepository _uavRepository;
+        public UAVDBService(IUAVRepository _uavRepository)
         {
-            this.uavRepository = uavRepository;
+            this._uavRepository = _uavRepository;
         }
 
         public async Task<bool> CreateUAVAsync(CreateUAVDTO createUAVDTO, CancellationToken cancellationToken = default)
         {
-            UAV createdUav = await uavRepository.CreateUAVAsync(createUAVDTO, cancellationToken);
+            UAV createdUav = await _uavRepository.CreateUAVAsync(createUAVDTO, cancellationToken);
             return createdUav != null;
         }
 
         public Task<bool> DeleteUAVByTailIdAsync(int tailId, CancellationToken cancellationToken = default)
         {
-            return uavRepository.DeleteUAVAsync(tailId, cancellationToken);
+            return _uavRepository.DeleteUAVAsync(tailId, cancellationToken);
         }
 
         public Task<IEnumerable<UAVRo>> GetAllUAVsAsync(CancellationToken cancellationToken = default)
         {
-            return uavRepository.GetAllUAVsAsync(cancellationToken);
+            return _uavRepository.GetAllUAVsAsync(cancellationToken);
         }
 
         public Task<UAVRo> GetUAVByTailIdAsync(int tailId, CancellationToken cancellationToken = default)
         {
-            return uavRepository.GetUAVByTailIdAsync(tailId, cancellationToken);
+            return _uavRepository.GetUAVByTailIdAsync(tailId, cancellationToken);
         }
 
         public Task<bool> UpdateUAVAsync(int tailId, UpdateUAVDto updateUAVDto, CancellationToken cancellationToken = default)
         {
-            return uavRepository.UpdateUAVAsync(tailId, updateUAVDto, cancellationToken);
+            return _uavRepository.UpdateUAVAsync(tailId, updateUAVDto, cancellationToken);
         }
     }
 }
