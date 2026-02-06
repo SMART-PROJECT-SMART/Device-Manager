@@ -1,19 +1,19 @@
 ﻿using DeviceManager.Common.Constants;
-using DeviceManager.Config;
 using DeviceManager.Services.SimulatorNotification;
 using DeviceManager.Services.TelemetryDeviceNotification;
 using MongoDB.Driver;
 using System.Text.Json.Serialization;
-using DeviceManager.Services.MongoDB.SleeveDBService;
 using DeviceManager.Services.SleeveRepository;
 using DeviceManager.Services.UAVDBService;
 using DeviceManager.Services.UAVDBService.Interfaces;
 using DeviceManager.Repositories.UAVRepository;
 using DeviceManager.Repositories.UAVRepository.Interfaces;
 using DeviceManager.Services.SimulatorNotification.Interfaces;
-using DeviceManager.Services.SleeveDBService.Interfaces;
 using DeviceManager.Repositories.SleeveRepository.Interfaces;
 using DeviceManager.Services.TelemetryDeviceNotification.Interfaces;
+using DeviceManager.Models.Config;
+using DeviceManager.Services.SleeveService.Interfaces;
+using DeviceManager.Services.MongoDB.SleeveDBService;
 
 namespace DeviceManager.Extentions
 {

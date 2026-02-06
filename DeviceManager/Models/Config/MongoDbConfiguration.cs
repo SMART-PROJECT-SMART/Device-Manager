@@ -1,4 +1,4 @@
-﻿namespace DeviceManager.Config
+﻿namespace DeviceManager.Models.Config
 {
     public class MongoDbConfiguration
     {

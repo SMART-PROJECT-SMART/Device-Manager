@@ -1,7 +1,7 @@
 using DeviceManager.Common.Constants;
-using DeviceManager.Config;
 using DeviceManager.Extentions;
 using DeviceManager.Models;
+using DeviceManager.Models.Config;
 using DeviceManager.Models.Dto;
 using DeviceManager.Models.Ro;
 using DeviceManager.Repositories.SleeveRepository.Interfaces;

@@ -1,5 +1,5 @@
 using Core.Common.Enums;
-using DeviceManager.Config;
+using DeviceManager.Models.Config;
 using DeviceManager.Models.Dto;
 using DeviceManager.Services.SimulatorNotification.Interfaces;
 using Microsoft.Extensions.Options;

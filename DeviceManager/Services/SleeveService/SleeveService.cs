@@ -3,7 +3,7 @@ using DeviceManager.Models;
 using DeviceManager.Models.Dto;
 using DeviceManager.Models.Ro;
 using DeviceManager.Repositories.SleeveRepository.Interfaces;
-using DeviceManager.Services.SleeveDBService.Interfaces;
+using DeviceManager.Services.SleeveService.Interfaces;
 using DeviceManager.Services.TelemetryDeviceNotification.Interfaces;
 
 namespace DeviceManager.Services.MongoDB.SleeveDBService

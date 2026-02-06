@@ -25,7 +25,7 @@ namespace DeviceManager.Extentions
         public static SleeveRo ToRo(this Sleeve sleeve)
         {
             if (sleeve == null) return null;
-            return new SleeveRo(sleeve.Name, sleeve.Location, sleeve.PortNumbers);
+            return new SleeveRo(sleeve.Name, sleeve.Location, sleeve.PortNumbers, sleeve.AssignedToTailId);
         }
 
         public static IEnumerable<SleeveRo> ToRo(this IEnumerable<Sleeve> sleeves)
