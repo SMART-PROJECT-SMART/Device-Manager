@@ -1,5 +1,6 @@
 ﻿using Confluent.Kafka;
 using Confluent.Kafka.Admin;
+using Core.Configuration;
 using Core.Services;
 using DeviceManager.Common.Constants;
 using DeviceManager.Models.Config;
@@ -33,6 +34,7 @@ namespace DeviceManager.Extentions
             services.Configure<SimulatorConfiguration>(configuration.GetSection(DeviceManagerConstants.Configuration.SIMULATOR_CONFIG_SECTION));
             services.Configure<TelemetryDeviceConfiguration>(configuration.GetSection(DeviceManagerConstants.Configuration.TELEMETRY_DEVICE_CONFIG_SECTION));
             services.Configure<KafkaConfiguration>(configuration.GetSection(DeviceManagerConstants.Configuration.KAFKA_CONFIG_SECTION));
+            services.Configure<ICDSettings>(configuration.GetSection(DeviceManagerConstants.Configuration.ICD_CONFIG_SECTION));
             services.AddSingleton<IMongoClient>(sp =>
             {
                 MongoDbConfiguration config = sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<MongoDbConfiguration>>().Value;
