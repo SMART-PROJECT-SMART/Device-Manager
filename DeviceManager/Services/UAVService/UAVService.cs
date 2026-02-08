@@ -3,6 +3,7 @@ using DeviceManager.Models;
 using DeviceManager.Models.Dto;
 using DeviceManager.Models.Ro;
 using DeviceManager.Repositories.UAVRepository.Interfaces;
+using DeviceManager.Services.Kafka;
 using DeviceManager.Services.SimulatorNotification.Interfaces;
 using DeviceManager.Services.UAVDBService.Interfaces;
 
@@ -12,13 +13,16 @@ namespace DeviceManager.Services.UAVDBService
     {
         private readonly IUAVRepository _uavRepository;
         private readonly ISimulatorNotificationService _simulatorNotificationService;
+        private readonly IKafkaTopicManager _kafkaTopicManager;
 
         public UAVService(
             IUAVRepository uavRepository,
-            ISimulatorNotificationService simulatorNotificationService)
+            ISimulatorNotificationService simulatorNotificationService,
+            IKafkaTopicManager kafkaTopicManager)
         {
             _uavRepository = uavRepository;
             _simulatorNotificationService = simulatorNotificationService;
+            _kafkaTopicManager = kafkaTopicManager;
         }
 
         public async Task<bool> CreateUAVAsync(CreateUAVDTO createUAVDTO, CancellationToken cancellationToken = default)
@@ -29,6 +33,7 @@ namespace DeviceManager.Services.UAVDBService
             if (created)
             {
                 _ = _simulatorNotificationService.NotifyUAVChangedAsync(CrudOperation.Created, createUAVDTO.TailId, cancellationToken);
+                _ = _kafkaTopicManager.CreateTopicAsync(createUAVDTO.TailId, cancellationToken);
             }
 
             return created;
@@ -41,6 +46,7 @@ namespace DeviceManager.Services.UAVDBService
             if (deleted)
             {
                 _ = _simulatorNotificationService.NotifyUAVChangedAsync(CrudOperation.Deleted, tailId, cancellationToken);
+                _ = _kafkaTopicManager.DeleteTopicAsync(tailId, cancellationToken);
             }
 
             return deleted;
@@ -63,6 +69,7 @@ namespace DeviceManager.Services.UAVDBService
             if (updated)
             {
                 _ = _simulatorNotificationService.NotifyUAVChangedAsync(CrudOperation.Updated, tailId, cancellationToken);
+                _ = _kafkaTopicManager.UpdateTopicAsync(tailId, cancellationToken);
             }
 
             return updated;

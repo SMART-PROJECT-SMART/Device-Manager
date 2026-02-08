@@ -6,6 +6,7 @@ builder.Services.AddAppConfiguration(builder.Configuration);
 builder.Services.AddMongoDBServices();
 builder.Services.AddSimulatorNotification();
 builder.Services.AddTelemetryDeviceNotification();
+builder.Services.AddKafkaServices();
 var app = builder.Build();
 
 app.UseRouting();
