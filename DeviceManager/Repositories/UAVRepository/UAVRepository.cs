@@ -1,3 +1,5 @@
+using Core.Common.Enums;
+using Core.Common.Helpers;
 using DeviceManager.Common.Constants;
 using DeviceManager.Extentions;
 using DeviceManager.Models;
@@ -61,8 +63,11 @@ namespace DeviceManager.Repositories.UAVRepository
             if (updateUAVDto.TailId.HasValue)
                 updates.Add(Builders<UAV>.Update.Set(u => u.TailId, updateUAVDto.TailId.Value));
 
-            if (updateUAVDto.BaseLocation != null)
-                updates.Add(Builders<UAV>.Update.Set(u => u.BaseLocation, updateUAVDto.BaseLocation));
+            if (updateUAVDto.BaseLocation.HasValue)
+            {
+                BaseLocation baseLocation = BaseLocationHelper.GetBaseLocation(updateUAVDto.BaseLocation.Value);
+                updates.Add(Builders<UAV>.Update.Set(u => u.BaseLocation, baseLocation));
+            }
 
             if (updates.Count == 0)
                 return false;

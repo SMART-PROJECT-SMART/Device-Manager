@@ -1,4 +1,5 @@
-﻿using DeviceManager.Models;
+﻿using Core.Common.Helpers;
+using DeviceManager.Models;
 using DeviceManager.Models.Dto;
 using DeviceManager.Models.Ro;
 
@@ -7,11 +8,13 @@ namespace DeviceManager.Extentions
     public static class EntityExtentions
     {
         public static UAV ToEntity(this CreateUAVDTO dto) {
-            return new UAV(dto.TailId, dto.PlatformType, dto.BaseLocation);
+            var baseLocation = BaseLocationHelper.GetBaseLocation(dto.BaseLocation);
+            return new UAV(dto.TailId, dto.PlatformType, baseLocation);
         }
         public static UAVRo ToRo(this UAV uav) {
             if (uav == null) return null;
-            return new UAVRo(uav.TailId, uav.PlatformType, uav.BaseLocation);
+            var location = BaseLocationHelper.GetLocation(uav.BaseLocation);
+            return new UAVRo(uav.TailId, uav.PlatformType, location);
         }
         public static IEnumerable<UAVRo> ToRo(this IEnumerable<UAV> uav) {
             return uav.Select(u => u.ToRo());

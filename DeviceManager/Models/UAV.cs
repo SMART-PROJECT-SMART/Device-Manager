@@ -7,7 +7,7 @@ namespace DeviceManager.Models
 {
     public class UAV
     {
-        public UAV(int tailId, PlatformType platformType, Location baseLocation)
+        public UAV(int tailId, PlatformType platformType, BaseLocation baseLocation)
         {
             TailId = tailId;
             PlatformType = platformType;
@@ -20,6 +20,7 @@ namespace DeviceManager.Models
         [BsonRequired]
         public PlatformType PlatformType { get; set; }
         [BsonRequired]
-        public Location BaseLocation { get; set; }
+        [BsonRepresentation(BsonType.String)]
+        public BaseLocation BaseLocation { get; set; }
     }
 }
