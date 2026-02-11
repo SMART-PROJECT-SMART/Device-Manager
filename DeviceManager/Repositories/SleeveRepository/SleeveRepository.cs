@@ -94,5 +94,12 @@ namespace DeviceManager.Services.SleeveRepository
             UpdateResult result = await _sleeveCollection.UpdateOneAsync(filter, update, null, cancellationToken);
             return result.ModifiedCount > 0;
         }
+
+        public async Task ReassignSleeveAsync(int oldTailId, int newTailId, CancellationToken cancellationToken = default)
+        {
+            FilterDefinition<Sleeve> filter = Builders<Sleeve>.Filter.Eq(s => s.AssignedToTailId, oldTailId);
+            UpdateDefinition<Sleeve> update = Builders<Sleeve>.Update.Set(s => s.AssignedToTailId, newTailId);
+            await _sleeveCollection.UpdateOneAsync(filter, update, null, cancellationToken);
+        }
     }
 }

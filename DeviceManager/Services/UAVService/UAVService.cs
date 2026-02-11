@@ -2,6 +2,7 @@
 using DeviceManager.Models;
 using DeviceManager.Models.Dto;
 using DeviceManager.Models.Ro;
+using DeviceManager.Repositories.SleeveRepository.Interfaces;
 using DeviceManager.Repositories.UAVRepository.Interfaces;
 using DeviceManager.Services.Kafka;
 using DeviceManager.Services.SimulatorNotification.Interfaces;
@@ -12,15 +13,18 @@ namespace DeviceManager.Services.UAVDBService
     public class UAVService : IUAVService
     {
         private readonly IUAVRepository _uavRepository;
+        private readonly ISleeveRepository _sleeveRepository;
         private readonly ISimulatorNotificationService _simulatorNotificationService;
         private readonly IKafkaTopicManager _kafkaTopicManager;
 
         public UAVService(
             IUAVRepository uavRepository,
+            ISleeveRepository sleeveRepository,
             ISimulatorNotificationService simulatorNotificationService,
             IKafkaTopicManager kafkaTopicManager)
         {
             _uavRepository = uavRepository;
+            _sleeveRepository = sleeveRepository;
             _simulatorNotificationService = simulatorNotificationService;
             _kafkaTopicManager = kafkaTopicManager;
         }
@@ -71,6 +75,10 @@ namespace DeviceManager.Services.UAVDBService
                 int? newTailId = updateUAVDto.TailId.HasValue && updateUAVDto.TailId.Value != tailId
                     ? updateUAVDto.TailId
                     : null;
+                if (newTailId.HasValue)
+                {
+                    _ = _sleeveRepository.ReassignSleeveAsync(tailId, newTailId.Value, cancellationToken);
+                }
                 _ = _simulatorNotificationService.NotifyUAVChangedAsync(CrudOperation.Updated, tailId, newTailId, cancellationToken);
                 _ = _kafkaTopicManager.UpdateTopicAsync(tailId, newTailId, cancellationToken);
             }
