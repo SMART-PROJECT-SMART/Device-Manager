@@ -4,6 +4,6 @@ namespace DeviceManager.Services.Kafka
     {
         Task CreateTopicAsync(int tailId, CancellationToken cancellationToken = default);
         Task DeleteTopicAsync(int tailId, CancellationToken cancellationToken = default);
-        Task UpdateTopicAsync(int tailId, CancellationToken cancellationToken = default);
+        Task UpdateTopicAsync(int tailId, int? newTailId = null, CancellationToken cancellationToken = default);
     }
 }

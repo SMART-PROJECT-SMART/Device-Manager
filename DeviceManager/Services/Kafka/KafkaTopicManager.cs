@@ -56,9 +56,15 @@ namespace DeviceManager.Services.Kafka
             }
         }
 
-        public Task UpdateTopicAsync(int tailId, CancellationToken cancellationToken = default)
+        public async Task UpdateTopicAsync(int tailId, int? newTailId = null, CancellationToken cancellationToken = default)
         {
-            return Task.CompletedTask;
+            if (!newTailId.HasValue || newTailId.Value == tailId)
+            {
+                return;
+            }
+
+            await DeleteTopicAsync(tailId, cancellationToken);
+            await CreateTopicAsync(newTailId.Value, cancellationToken);
         }
 
         private string BuildTopicName(int tailId)

@@ -32,7 +32,7 @@ namespace DeviceManager.Services.UAVDBService
 
             if (created)
             {
-                _ = _simulatorNotificationService.NotifyUAVChangedAsync(CrudOperation.Created, createUAVDTO.TailId, cancellationToken);
+                _ = _simulatorNotificationService.NotifyUAVChangedAsync(CrudOperation.Created, createUAVDTO.TailId, cancellationToken: cancellationToken);
                 _ = _kafkaTopicManager.CreateTopicAsync(createUAVDTO.TailId, cancellationToken);
             }
 
@@ -45,7 +45,7 @@ namespace DeviceManager.Services.UAVDBService
 
             if (deleted)
             {
-                _ = _simulatorNotificationService.NotifyUAVChangedAsync(CrudOperation.Deleted, tailId, cancellationToken);
+                _ = _simulatorNotificationService.NotifyUAVChangedAsync(CrudOperation.Deleted, tailId, cancellationToken: cancellationToken);
                 _ = _kafkaTopicManager.DeleteTopicAsync(tailId, cancellationToken);
             }
 
@@ -68,8 +68,11 @@ namespace DeviceManager.Services.UAVDBService
 
             if (updated)
             {
-                _ = _simulatorNotificationService.NotifyUAVChangedAsync(CrudOperation.Updated, tailId, cancellationToken);
-                _ = _kafkaTopicManager.UpdateTopicAsync(tailId, cancellationToken);
+                int? newTailId = updateUAVDto.TailId.HasValue && updateUAVDto.TailId.Value != tailId
+                    ? updateUAVDto.TailId
+                    : null;
+                _ = _simulatorNotificationService.NotifyUAVChangedAsync(CrudOperation.Updated, tailId, newTailId, cancellationToken);
+                _ = _kafkaTopicManager.UpdateTopicAsync(tailId, newTailId, cancellationToken);
             }
 
             return updated;

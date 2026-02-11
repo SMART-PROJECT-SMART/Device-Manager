@@ -17,9 +17,9 @@ namespace DeviceManager.Services.SimulatorNotification
             _simulatorConfig = simulatorConfig.Value;
         }
 
-        public async Task NotifyUAVChangedAsync(CrudOperation operation, int tailId, CancellationToken cancellationToken = default)
+        public async Task NotifyUAVChangedAsync(CrudOperation operation, int tailId, int? newTailId = null, CancellationToken cancellationToken = default)
         {
-            UAVChangedNotificationDTO notification = new UAVChangedNotificationDTO(operation, tailId);
+            UAVChangedNotificationDTO notification = new UAVChangedNotificationDTO(operation, tailId, newTailId);
             string url = new Uri(new Uri(_simulatorConfig.BaseUrl), _simulatorConfig.WebhookEndpoint).ToString();
             await _httpClient.PostAsJsonAsync(url, notification, cancellationToken);
         }
