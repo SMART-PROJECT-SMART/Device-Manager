@@ -23,5 +23,12 @@ namespace DeviceManager.Services.SimulatorNotification
             string url = new Uri(new Uri(_simulatorConfig.BaseUrl), _simulatorConfig.WebhookEndpoint).ToString();
             await _httpClient.PostAsJsonAsync(url, notification, cancellationToken);
         }
+
+        public async Task NotifyUAVPortsChangedAsync(int tailId, IEnumerable<int> newPorts, CancellationToken cancellationToken = default)
+        {
+            UAVPortsChangedNotificationDTO notification = new UAVPortsChangedNotificationDTO(tailId, newPorts);
+            string url = new Uri(new Uri(_simulatorConfig.BaseUrl), _simulatorConfig.PortsWebhookEndpoint).ToString();
+            await _httpClient.PostAsJsonAsync(url, notification, cancellationToken);
+        }
     }
 }

@@ -3,6 +3,7 @@ using DeviceManager.Models;
 using DeviceManager.Models.Dto;
 using DeviceManager.Models.Ro;
 using DeviceManager.Repositories.SleeveRepository.Interfaces;
+using DeviceManager.Services.SimulatorNotification.Interfaces;
 using DeviceManager.Services.SleeveService.Interfaces;
 using DeviceManager.Services.TelemetryDeviceNotification.Interfaces;
 
@@ -12,13 +13,16 @@ namespace DeviceManager.Services.MongoDB.SleeveDBService
     {
         private readonly ISleeveRepository _sleeveRepository;
         private readonly ITelemetryDeviceNotificationService _telemetryDeviceNotificationService;
+        private readonly ISimulatorNotificationService _simulatorNotificationService;
 
         public SleeveService(
             ISleeveRepository sleeveRepository,
-            ITelemetryDeviceNotificationService telemetryDeviceNotificationService)
+            ITelemetryDeviceNotificationService telemetryDeviceNotificationService,
+            ISimulatorNotificationService simulatorNotificationService)
         {
             _sleeveRepository = sleeveRepository;
             _telemetryDeviceNotificationService = telemetryDeviceNotificationService;
+            _simulatorNotificationService = simulatorNotificationService;
         }
 
         public async Task<bool> CreateSleeveAsync(CreateSleeveDTO createSleeveDTO, CancellationToken cancellationToken = default)
@@ -58,11 +62,23 @@ namespace DeviceManager.Services.MongoDB.SleeveDBService
 
         public async Task<bool> UpdateSleeveAsync(string name, UpdateSleeveDTO updateSleeveDTO, CancellationToken cancellationToken = default)
         {
+            int? assignedTailId = null;
+            if (updateSleeveDTO.PortNumbers != null)
+            {
+                SleeveRo currentSleeve = await _sleeveRepository.GetSleeveByNameAsync(name, cancellationToken);
+                assignedTailId = currentSleeve?.AssignedToTailId;
+            }
+
             bool updated = await _sleeveRepository.UpdateSleeveAsync(name, updateSleeveDTO, cancellationToken);
 
             if (updated)
             {
                 _ = _telemetryDeviceNotificationService.NotifySleeveChangedAsync(CrudOperation.Updated, name, cancellationToken);
+
+                if (assignedTailId.HasValue)
+                {
+                    _ = _simulatorNotificationService.NotifyUAVPortsChangedAsync(assignedTailId.Value, updateSleeveDTO.PortNumbers, cancellationToken);
+                }
             }
 
             return updated;
