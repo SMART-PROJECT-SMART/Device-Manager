@@ -77,21 +77,28 @@ namespace DeviceManager.Services.SleeveRepository
 
         public async Task<IEnumerable<int>> GetAvailableSleeveForUAVAsync(int tailId, CancellationToken cancellationToken = default)
         {
-            FilterDefinition<Sleeve> filter = Builders<Sleeve>.Filter.Eq(s => s.AssignedToTailId, null);
+            FilterDefinition<Sleeve> existingFilter = Builders<Sleeve>.Filter.Eq(s => s.AssignedToTailId, tailId);
+            Sleeve existingSleeve = await _sleeveCollection.Find(existingFilter).FirstOrDefaultAsync(cancellationToken);
+            if (existingSleeve != null)
+            {
+                return existingSleeve.PortNumbers;
+            }
+
+            FilterDefinition<Sleeve> availableFilter = Builders<Sleeve>.Filter.Eq(s => s.AssignedToTailId, null);
             UpdateDefinition<Sleeve> update = Builders<Sleeve>.Update.Set(s => s.AssignedToTailId, tailId);
             FindOneAndUpdateOptions<Sleeve> options = new FindOneAndUpdateOptions<Sleeve>
             {
                 ReturnDocument = ReturnDocument.After
             };
-            Sleeve updatedSleeve = await _sleeveCollection.FindOneAndUpdateAsync(filter, update, options, cancellationToken);
-            return updatedSleeve?.PortNumbers ?? Enumerable.Empty<int>();
+            Sleeve assignedSleeve = await _sleeveCollection.FindOneAndUpdateAsync(availableFilter, update, options, cancellationToken);
+            return assignedSleeve?.PortNumbers ?? Enumerable.Empty<int>();
         }
 
         public async Task<bool> ReleaseSleeveByTailIdAsync(int tailId, CancellationToken cancellationToken = default)
         {
             FilterDefinition<Sleeve> filter = Builders<Sleeve>.Filter.Eq(s => s.AssignedToTailId, tailId);
             UpdateDefinition<Sleeve> update = Builders<Sleeve>.Update.Set(s => s.AssignedToTailId, null);
-            UpdateResult result = await _sleeveCollection.UpdateOneAsync(filter, update, null, cancellationToken);
+            UpdateResult result = await _sleeveCollection.UpdateManyAsync(filter, update, null, cancellationToken);
             return result.ModifiedCount > 0;
         }
 
@@ -99,7 +106,7 @@ namespace DeviceManager.Services.SleeveRepository
         {
             FilterDefinition<Sleeve> filter = Builders<Sleeve>.Filter.Eq(s => s.AssignedToTailId, oldTailId);
             UpdateDefinition<Sleeve> update = Builders<Sleeve>.Update.Set(s => s.AssignedToTailId, newTailId);
-            await _sleeveCollection.UpdateOneAsync(filter, update, null, cancellationToken);
+            await _sleeveCollection.UpdateManyAsync(filter, update, null, cancellationToken);
         }
     }
 }
