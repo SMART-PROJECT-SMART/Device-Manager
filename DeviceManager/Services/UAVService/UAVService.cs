@@ -49,6 +49,7 @@ namespace DeviceManager.Services.UAVDBService
 
             if (deleted)
             {
+                _ = _sleeveRepository.ReleaseSleeveByTailIdAsync(tailId, cancellationToken);
                 _ = _simulatorNotificationService.NotifyUAVChangedAsync(CrudOperation.Deleted, tailId, cancellationToken: cancellationToken);
                 _ = _kafkaTopicManager.DeleteTopicAsync(tailId, cancellationToken);
             }
