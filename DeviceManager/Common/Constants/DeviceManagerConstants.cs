@@ -6,6 +6,7 @@
             public const string MONGODB_CONFIG_SECTION = "MongoDbConfiguration";
             public const string SIMULATOR_CONFIG_SECTION = "Simulator";
             public const string TELEMETRY_DEVICE_CONFIG_SECTION = "TelemetryDevice";
+            public const string ACM_CONFIG_SECTION = "ACM";
             public const string KAFKA_CONFIG_SECTION = "Kafka";
             public const string ICD_CONFIG_SECTION = "ICD";
         }

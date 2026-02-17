@@ -3,6 +3,7 @@ using DeviceManager.Models;
 using DeviceManager.Models.Dto;
 using DeviceManager.Models.Ro;
 using DeviceManager.Repositories.SleeveRepository.Interfaces;
+using DeviceManager.Services.ACMNotification.Interfaces;
 using DeviceManager.Services.SimulatorNotification.Interfaces;
 using DeviceManager.Services.SleeveService.Interfaces;
 using DeviceManager.Services.TelemetryDeviceNotification.Interfaces;
@@ -13,15 +14,18 @@ namespace DeviceManager.Services.MongoDB.SleeveDBService
     {
         private readonly ISleeveRepository _sleeveRepository;
         private readonly ITelemetryDeviceNotificationService _telemetryDeviceNotificationService;
+        private readonly IACMNotificationService _acmNotificationService;
         private readonly ISimulatorNotificationService _simulatorNotificationService;
 
         public SleeveService(
             ISleeveRepository sleeveRepository,
             ITelemetryDeviceNotificationService telemetryDeviceNotificationService,
+            IACMNotificationService acmNotificationService,
             ISimulatorNotificationService simulatorNotificationService)
         {
             _sleeveRepository = sleeveRepository;
             _telemetryDeviceNotificationService = telemetryDeviceNotificationService;
+            _acmNotificationService = acmNotificationService;
             _simulatorNotificationService = simulatorNotificationService;
         }
 
@@ -33,6 +37,7 @@ namespace DeviceManager.Services.MongoDB.SleeveDBService
             if (created)
             {
                 _ = _telemetryDeviceNotificationService.NotifySleeveChangedAsync(CrudOperation.Created, createSleeveDTO.Name, cancellationToken);
+                _ = _acmNotificationService.NotifySleeveChangedAsync(CrudOperation.Created, createSleeveDTO.Name, cancellationToken);
             }
 
             return created;
@@ -45,6 +50,7 @@ namespace DeviceManager.Services.MongoDB.SleeveDBService
             if (deleted)
             {
                 _ = _telemetryDeviceNotificationService.NotifySleeveChangedAsync(CrudOperation.Deleted, name, cancellationToken);
+                _ = _acmNotificationService.NotifySleeveChangedAsync(CrudOperation.Deleted, name, cancellationToken);
             }
 
             return deleted;
@@ -74,6 +80,7 @@ namespace DeviceManager.Services.MongoDB.SleeveDBService
             if (updated)
             {
                 _ = _telemetryDeviceNotificationService.NotifySleeveChangedAsync(CrudOperation.Updated, name, cancellationToken);
+                _ = _acmNotificationService.NotifySleeveChangedAsync(CrudOperation.Updated, name, cancellationToken);
 
                 if (assignedTailId.HasValue)
                 {
