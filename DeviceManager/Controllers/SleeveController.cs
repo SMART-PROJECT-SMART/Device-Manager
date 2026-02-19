@@ -99,5 +99,21 @@ namespace DeviceManager.Controllers
             }
             return NoContent();
         }
+
+        [HttpPost("assign")]
+        public async Task<ActionResult> Assign([FromBody] AssignSleeveToUavDto dto, CancellationToken cancellationToken)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            bool assigned = await _sleeveService.AssignSleeveToUavAsync(dto.TailId, dto.SleeveName, cancellationToken);
+            if (!assigned)
+            {
+                return NotFound(string.Format(DeviceManagerConstants.ErrorMessages.SLEEVE_NOT_FOUND, dto.SleeveName));
+            }
+            return NoContent();
+        }
     }
 }

@@ -15,5 +15,6 @@ namespace DeviceManager.Repositories.SleeveRepository.Interfaces
         Task<IEnumerable<int>> GetAvailableSleeveForUAVAsync(int tailId, CancellationToken cancellationToken = default);
         Task<bool> ReleaseSleeveByTailIdAsync(int tailId, CancellationToken cancellationToken = default);
         Task ReassignSleeveAsync(int oldTailId, int newTailId, CancellationToken cancellationToken = default);
+        Task<bool> AssignSleeveToUavAsync(int tailId, string sleeveName, CancellationToken cancellationToken = default);
     }
 }

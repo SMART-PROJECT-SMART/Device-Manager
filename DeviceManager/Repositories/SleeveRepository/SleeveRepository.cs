@@ -108,5 +108,25 @@ namespace DeviceManager.Services.SleeveRepository
             UpdateDefinition<Sleeve> update = Builders<Sleeve>.Update.Set(s => s.AssignedToTailId, newTailId);
             await _sleeveCollection.UpdateManyAsync(filter, update, null, cancellationToken);
         }
+
+        public async Task<bool> AssignSleeveToUavAsync(int tailId, string sleeveName, CancellationToken cancellationToken = default)
+        {
+            FilterDefinition<Sleeve> sleeveFilter = Builders<Sleeve>.Filter.Eq(s => s.Name, sleeveName);
+            Sleeve? sleeve = await _sleeveCollection.Find(sleeveFilter).FirstOrDefaultAsync(cancellationToken);
+            if (sleeve == null)
+            {
+                return false;
+            }
+
+            if (sleeve.AssignedToTailId == tailId)
+            {
+                return true;
+            }
+
+            await ReleaseSleeveByTailIdAsync(tailId, cancellationToken);
+            UpdateDefinition<Sleeve> assignUpdate = Builders<Sleeve>.Update.Set(s => s.AssignedToTailId, tailId);
+            UpdateResult assignResult = await _sleeveCollection.UpdateOneAsync(sleeveFilter, assignUpdate, null, cancellationToken);
+            return assignResult.ModifiedCount > 0;
+        }
     }
 }
