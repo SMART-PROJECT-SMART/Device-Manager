@@ -14,10 +14,10 @@ namespace DeviceManager.Models
             AssignedToTailId = null;
         }
 
+        [BsonId]
         public int Id { get; set; }
 
         [BsonRequired]
-        [BsonId]
         public string Name { get; set; }
         [BsonRequired]
         public Location Location { get; set; }
