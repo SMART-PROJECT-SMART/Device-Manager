@@ -22,9 +22,20 @@ namespace DeviceManager.Services.SleeveRepository
 
         public async Task<Sleeve> CreateSleeveAsync(CreateSleeveDTO createSleeveDTO, CancellationToken cancellationToken = default)
         {
-            Sleeve sleeveEntity = createSleeveDTO.ToEntity();
+            int nextId = await GetNextSleeveIdAsync(cancellationToken);
+            Sleeve sleeveEntity = new Sleeve(nextId, createSleeveDTO.Name, createSleeveDTO.Location, createSleeveDTO.PortNumbers);
             await _sleeveCollection.InsertOneAsync(sleeveEntity, null, cancellationToken);
             return sleeveEntity;
+        }
+
+        private async Task<int> GetNextSleeveIdAsync(CancellationToken cancellationToken)
+        {
+            List<Sleeve> sleeves = await _sleeveCollection.Find(FilterDefinition<Sleeve>.Empty)
+                .SortByDescending(s => s.Id)
+                .Limit(1)
+                .ToListAsync(cancellationToken);
+            Sleeve? maxSleeve = sleeves.FirstOrDefault();
+            return (maxSleeve?.Id ?? 0) + 1;
         }
 
         public async Task<bool> DeleteSleeveAsync(string name, CancellationToken cancellationToken = default)

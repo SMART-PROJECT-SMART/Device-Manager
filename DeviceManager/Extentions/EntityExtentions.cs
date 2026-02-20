@@ -1,4 +1,4 @@
-﻿using Core.Common.Helpers;
+using Core.Common.Helpers;
 using DeviceManager.Models;
 using DeviceManager.Models.Dto;
 using DeviceManager.Models.Ro;
@@ -20,15 +20,11 @@ namespace DeviceManager.Extentions
             return uav.Select(u => u.ToRo());
         }
 
-        public static Sleeve ToEntity(this CreateSleeveDTO dto)
-        {
-            return new Sleeve(dto.Name, dto.Location, dto.PortNumbers);
-        }
 
         public static SleeveRo ToRo(this Sleeve sleeve)
         {
             if (sleeve == null) return null;
-            return new SleeveRo(sleeve.Name, sleeve.Location, sleeve.PortNumbers, sleeve.AssignedToTailId);
+            return new SleeveRo(sleeve.Id, sleeve.Name, sleeve.Location, sleeve.PortNumbers, sleeve.AssignedToTailId);
         }
 
         public static IEnumerable<SleeveRo> ToRo(this IEnumerable<Sleeve> sleeves)
