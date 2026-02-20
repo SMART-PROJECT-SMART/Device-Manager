@@ -1,4 +1,4 @@
-﻿namespace DeviceManager.Common.Constants
+namespace DeviceManager.Common.Constants
 {
     public static class DeviceManagerConstants
     {
@@ -20,6 +20,7 @@
             public const string UAV_UPDATE_FAILED = "Failed to update UAV with TailId {0}.";
             public const string UAV_DELETE_FAILED = "Failed to delete UAV with TailId {0}.";
             public const string SLEEVE_NOT_FOUND = "Sleeve with name '{0}' not found.";
+            public const string SLEEVE_ID_NOT_FOUND = "Sleeve with id '{0}' not found.";
             public const string SLEEVE_CREATE_FAILED = "Failed to create Sleeve.";
             public const string SLEEVE_UPDATE_FAILED = "Failed to update Sleeve with name '{0}'.";
             public const string SLEEVE_DELETE_FAILED = "Failed to delete Sleeve with name '{0}'.";

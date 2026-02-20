@@ -8,6 +8,6 @@ namespace DeviceManager.Models.Dto
         public int TailId { get; set; }
 
         [Required]
-        public string SleeveName { get; set; } = string.Empty;
+        public int SleeveId { get; set; }
     }
 }

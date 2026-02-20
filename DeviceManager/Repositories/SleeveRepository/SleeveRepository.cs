@@ -120,9 +120,9 @@ namespace DeviceManager.Services.SleeveRepository
             await _sleeveCollection.UpdateManyAsync(filter, update, null, cancellationToken);
         }
 
-        public async Task<bool> AssignSleeveToUavAsync(int tailId, string sleeveName, CancellationToken cancellationToken = default)
+        public async Task<bool> AssignSleeveToUavAsync(int tailId, int sleeveId, CancellationToken cancellationToken = default)
         {
-            FilterDefinition<Sleeve> sleeveFilter = Builders<Sleeve>.Filter.Eq(s => s.Name, sleeveName);
+            FilterDefinition<Sleeve> sleeveFilter = Builders<Sleeve>.Filter.Eq(s => s.Id, sleeveId);
             Sleeve? sleeve = await _sleeveCollection.Find(sleeveFilter).FirstOrDefaultAsync(cancellationToken);
             if (sleeve == null)
             {

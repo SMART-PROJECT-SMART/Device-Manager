@@ -108,10 +108,10 @@ namespace DeviceManager.Controllers
                 return BadRequest(ModelState);
             }
 
-            bool assigned = await _sleeveService.AssignSleeveToUavAsync(dto.TailId, dto.SleeveName, cancellationToken);
+            bool assigned = await _sleeveService.AssignSleeveToUavAsync(dto.TailId, dto.SleeveId, cancellationToken);
             if (!assigned)
             {
-                return NotFound(string.Format(DeviceManagerConstants.ErrorMessages.SLEEVE_NOT_FOUND, dto.SleeveName));
+                return NotFound(string.Format(DeviceManagerConstants.ErrorMessages.SLEEVE_ID_NOT_FOUND, dto.SleeveId));
             }
             return NoContent();
         }

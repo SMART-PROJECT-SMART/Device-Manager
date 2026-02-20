@@ -101,9 +101,9 @@ namespace DeviceManager.Services.MongoDB.SleeveDBService
             return _sleeveRepository.ReleaseSleeveByTailIdAsync(tailId, cancellationToken);
         }
 
-        public Task<bool> AssignSleeveToUavAsync(int tailId, string sleeveName, CancellationToken cancellationToken = default)
+        public Task<bool> AssignSleeveToUavAsync(int tailId, int sleeveId, CancellationToken cancellationToken = default)
         {
-            return _sleeveRepository.AssignSleeveToUavAsync(tailId, sleeveName, cancellationToken);
+            return _sleeveRepository.AssignSleeveToUavAsync(tailId, sleeveId, cancellationToken);
         }
     }
 }
