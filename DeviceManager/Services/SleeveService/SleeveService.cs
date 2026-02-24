@@ -36,8 +36,8 @@ namespace DeviceManager.Services.MongoDB.SleeveDBService
 
             if (created)
             {
-                _ = _telemetryDeviceNotificationService.NotifySleeveChangedAsync(CrudOperation.Created, createSleeveDTO.Name, cancellationToken);
-                _ = _acmNotificationService.NotifySleeveChangedAsync(CrudOperation.Created, createSleeveDTO.Name, cancellationToken);
+                _ = _telemetryDeviceNotificationService.NotifySleeveChangedAsync(CrudOperation.Created, createdSleeve.Id, createdSleeve.Name, cancellationToken);
+                _ = _acmNotificationService.NotifySleeveChangedAsync(CrudOperation.Created, createdSleeve.Id, createdSleeve.Name, cancellationToken);
             }
 
             return created;
@@ -45,12 +45,13 @@ namespace DeviceManager.Services.MongoDB.SleeveDBService
 
         public async Task<bool> DeleteSleeveByNameAsync(string name, CancellationToken cancellationToken = default)
         {
+            SleeveRo sleeve = await _sleeveRepository.GetSleeveByNameAsync(name, cancellationToken);
             bool deleted = await _sleeveRepository.DeleteSleeveAsync(name, cancellationToken);
 
             if (deleted)
             {
-                _ = _telemetryDeviceNotificationService.NotifySleeveChangedAsync(CrudOperation.Deleted, name, cancellationToken);
-                _ = _acmNotificationService.NotifySleeveChangedAsync(CrudOperation.Deleted, name, cancellationToken);
+                _ = _telemetryDeviceNotificationService.NotifySleeveChangedAsync(CrudOperation.Deleted, sleeve.Id, name, cancellationToken);
+                _ = _acmNotificationService.NotifySleeveChangedAsync(CrudOperation.Deleted, sleeve.Id, name, cancellationToken);
             }
 
             return deleted;
@@ -68,23 +69,17 @@ namespace DeviceManager.Services.MongoDB.SleeveDBService
 
         public async Task<bool> UpdateSleeveAsync(string name, UpdateSleeveDTO updateSleeveDTO, CancellationToken cancellationToken = default)
         {
-            int? assignedTailId = null;
-            if (updateSleeveDTO.PortNumbers != null)
-            {
-                SleeveRo currentSleeve = await _sleeveRepository.GetSleeveByNameAsync(name, cancellationToken);
-                assignedTailId = currentSleeve?.AssignedToTailId;
-            }
-
+            SleeveRo currentSleeve = await _sleeveRepository.GetSleeveByNameAsync(name, cancellationToken);
             bool updated = await _sleeveRepository.UpdateSleeveAsync(name, updateSleeveDTO, cancellationToken);
 
             if (updated)
             {
-                _ = _telemetryDeviceNotificationService.NotifySleeveChangedAsync(CrudOperation.Updated, name, cancellationToken);
-                _ = _acmNotificationService.NotifySleeveChangedAsync(CrudOperation.Updated, name, cancellationToken);
+                _ = _telemetryDeviceNotificationService.NotifySleeveChangedAsync(CrudOperation.Updated, currentSleeve.Id, name, cancellationToken);
+                _ = _acmNotificationService.NotifySleeveChangedAsync(CrudOperation.Updated, currentSleeve.Id, name, cancellationToken);
 
-                if (assignedTailId.HasValue)
+                if (updateSleeveDTO.PortNumbers != null && currentSleeve?.AssignedToTailId.HasValue == true)
                 {
-                    _ = _simulatorNotificationService.NotifyUAVPortsChangedAsync(assignedTailId.Value, updateSleeveDTO.PortNumbers, cancellationToken);
+                    _ = _simulatorNotificationService.NotifyUAVPortsChangedAsync(currentSleeve.AssignedToTailId.Value, updateSleeveDTO.PortNumbers, cancellationToken);
                 }
             }
 

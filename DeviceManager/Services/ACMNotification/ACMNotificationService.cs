@@ -17,9 +17,9 @@ namespace DeviceManager.Services.ACMNotification
             _acmConfig = acmConfig.Value;
         }
 
-        public async Task NotifySleeveChangedAsync(CrudOperation operation, string name, CancellationToken cancellationToken = default)
+        public async Task NotifySleeveChangedAsync(CrudOperation operation, int id, string name, CancellationToken cancellationToken = default)
         {
-            SleeveChangedNotificationDTO notification = new SleeveChangedNotificationDTO(operation, name);
+            SleeveChangedNotificationDTO notification = new SleeveChangedNotificationDTO(operation, id, name);
             string url = new Uri(new Uri(_acmConfig.BaseUrl), _acmConfig.WebhookEndpoint).ToString();
             await _httpClient.PostAsJsonAsync(url, notification, cancellationToken);
         }
