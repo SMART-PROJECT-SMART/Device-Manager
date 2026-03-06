@@ -6,6 +6,7 @@ using DeviceManager.Repositories.SleeveRepository.Interfaces;
 using DeviceManager.Repositories.UAVRepository.Interfaces;
 using DeviceManager.Services.Kafka;
 using DeviceManager.Services.SimulatorNotification.Interfaces;
+using DeviceManager.Services.MongoConsumerNotification.Interfaces;
 using DeviceManager.Services.UAVDBService.Interfaces;
 
 namespace DeviceManager.Services.UAVDBService
@@ -15,17 +16,20 @@ namespace DeviceManager.Services.UAVDBService
         private readonly IUAVRepository _uavRepository;
         private readonly ISleeveRepository _sleeveRepository;
         private readonly ISimulatorNotificationService _simulatorNotificationService;
+        private readonly IMongoConsumerNotificationService _mongoConsumerNotificationService;
         private readonly IKafkaTopicManager _kafkaTopicManager;
 
         public UAVService(
             IUAVRepository uavRepository,
             ISleeveRepository sleeveRepository,
             ISimulatorNotificationService simulatorNotificationService,
+            IMongoConsumerNotificationService mongoConsumerNotificationService,
             IKafkaTopicManager kafkaTopicManager)
         {
             _uavRepository = uavRepository;
             _sleeveRepository = sleeveRepository;
             _simulatorNotificationService = simulatorNotificationService;
+            _mongoConsumerNotificationService = mongoConsumerNotificationService;
             _kafkaTopicManager = kafkaTopicManager;
         }
 
@@ -37,6 +41,7 @@ namespace DeviceManager.Services.UAVDBService
             if (created)
             {
                 _ = _simulatorNotificationService.NotifyUAVChangedAsync(CrudOperation.Created, createUAVDTO.TailId, cancellationToken: cancellationToken);
+                _ = _mongoConsumerNotificationService.NotifyUAVChangedAsync(CrudOperation.Created, createUAVDTO.TailId, cancellationToken: cancellationToken);
                 _ = _kafkaTopicManager.CreateTopicAsync(createUAVDTO.TailId, cancellationToken);
             }
 
@@ -51,6 +56,7 @@ namespace DeviceManager.Services.UAVDBService
             {
                 _ = _sleeveRepository.ReleaseSleeveByTailIdAsync(tailId, cancellationToken);
                 _ = _simulatorNotificationService.NotifyUAVChangedAsync(CrudOperation.Deleted, tailId, cancellationToken: cancellationToken);
+                _ = _mongoConsumerNotificationService.NotifyUAVChangedAsync(CrudOperation.Deleted, tailId, cancellationToken: cancellationToken);
                 _ = _kafkaTopicManager.DeleteTopicAsync(tailId, cancellationToken);
             }
 
@@ -81,6 +87,7 @@ namespace DeviceManager.Services.UAVDBService
                     _ = _sleeveRepository.ReassignSleeveAsync(tailId, newTailId.Value, cancellationToken);
                 }
                 _ = _simulatorNotificationService.NotifyUAVChangedAsync(CrudOperation.Updated, tailId, newTailId, cancellationToken);
+                _ = _mongoConsumerNotificationService.NotifyUAVChangedAsync(CrudOperation.Updated, tailId, newTailId, cancellationToken);
                 _ = _kafkaTopicManager.UpdateTopicAsync(tailId, newTailId, cancellationToken);
             }
 

@@ -7,6 +7,7 @@ builder.Services.AddMongoDBServices();
 builder.Services.AddSimulatorNotification();
 builder.Services.AddTelemetryDeviceNotification();
 builder.Services.AddACMNotification();
+builder.Services.AddMongoConsumerNotification();
 builder.Services.AddKafkaServices();
 var app = builder.Build();
 

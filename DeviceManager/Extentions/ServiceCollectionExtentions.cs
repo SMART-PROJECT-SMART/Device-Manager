@@ -17,6 +17,8 @@ using DeviceManager.Services.TelemetryDeviceNotification;
 using DeviceManager.Services.TelemetryDeviceNotification.Interfaces;
 using DeviceManager.Services.ACMNotification;
 using DeviceManager.Services.ACMNotification.Interfaces;
+using DeviceManager.Services.MongoConsumerNotification;
+using DeviceManager.Services.MongoConsumerNotification.Interfaces;
 using DeviceManager.Services.UAVDBService;
 using DeviceManager.Services.UAVDBService.Interfaces;
 using MongoDB.Driver;
@@ -43,6 +45,7 @@ namespace DeviceManager.Extentions
             services.Configure<SimulatorConfiguration>(configuration.GetSection(DeviceManagerConstants.Configuration.SIMULATOR_CONFIG_SECTION));
             services.Configure<TelemetryDeviceConfiguration>(configuration.GetSection(DeviceManagerConstants.Configuration.TELEMETRY_DEVICE_CONFIG_SECTION));
             services.Configure<ACMConfiguration>(configuration.GetSection(DeviceManagerConstants.Configuration.ACM_CONFIG_SECTION));
+            services.Configure<MongoConsumerConfiguration>(configuration.GetSection(DeviceManagerConstants.Configuration.MONGO_CONSUMER_CONFIG_SECTION));
             services.Configure<KafkaConfiguration>(configuration.GetSection(DeviceManagerConstants.Configuration.KAFKA_CONFIG_SECTION));
             services.Configure<ICDSettings>(configuration.GetSection(DeviceManagerConstants.Configuration.ICD_CONFIG_SECTION));
             services.AddSingleton<IMongoClient>(sp =>
@@ -72,6 +75,11 @@ namespace DeviceManager.Extentions
 
         public static IServiceCollection AddACMNotification(this IServiceCollection services) {
             services.AddHttpClient<IACMNotificationService, ACMNotificationService>();
+            return services;
+        }
+
+        public static IServiceCollection AddMongoConsumerNotification(this IServiceCollection services) {
+            services.AddHttpClient<IMongoConsumerNotificationService, MongoConsumerNotificationService>();
             return services;
         }
 
